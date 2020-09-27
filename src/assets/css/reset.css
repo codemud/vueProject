@@ -1,0 +1,181 @@
+html {
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+body,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+input,
+p,
+blockquote,
+th,
+td {
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h4,
+h5 {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
+  color: #666666;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  text-align: left;
+}
+
+select {
+  font-size: 12px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+fieldset,
+img {
+  border: 0 none;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+fieldset p {
+  margin: 0;
+  padding: 0008px;
+}
+
+legend {
+  display: none;
+}
+
+address,
+caption,
+em,
+strong,
+th,
+i {
+  font-style: normal;
+  font-weight: normal;
+}
+
+table caption {
+  margin-left: -1px;
+}
+
+hr {
+  border-bottom: 1px solid #ffffff;
+  border-top: 1px solid #e4e4e4;
+  border-width: 1px 0;
+  clear: both;
+  height: 2px;
+  margin: 5px 0;
+  overflow: hidden;
+}
+
+ol,
+ul {
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+}
+
+caption,
+th {
+  text-align: left;
+}
+
+q:before,
+q:after,
+blockquote:before,
+blockquote:after {
+  content: "";
+}
+
+body::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;
+}
+
+.margintop_10 {
+  margin-top: 10px;
+}
+
+.margintop_20 {
+  margin-top: 20px;
+}
+
+.margintop_30 {
+  margin-top: 30px;
+}
+
+.margin_right10 {
+  margin-right: 10px;
+}
+
+.margin_left20 {
+  margin-left: 20px;
+}
+
+.marginbottom_10 {
+  margin-bottom: 10px !important;
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.el-dialog__wrapper {
+  /* overflow-y: hidden; */
+}
+
+.el-dialog__wrapper::-webkit-scrollbar {
+  width: 10px;
+}
+
+.el-dialog__wrapper::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #ccc;
+}
+
+.el-dialog__wrapper::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: #eaeaea;
+}

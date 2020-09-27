@@ -1,0 +1,20 @@
+[
+  {
+    "navBarColor": "#002141",
+    "headerColor": "#f0f2f5",
+    "txtColor": "#909399",
+    "txt": "默认"
+  },
+  {
+    "navBarColor": "#450032",
+    "headerColor": "rgba(84, 0, 60, 0.05)",
+    "txtColor": "#909399",
+    "txt": "红紫"
+  },
+  {
+    "navBarColor": "#004b5c",
+    "headerColor": "rgba(0, 68, 83, 0.08)",
+    "txtColor": "#909399",
+    "txt": "青蓝"
+  }
+]
