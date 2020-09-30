@@ -38,6 +38,7 @@
     import source from "@/api/doctorMs/source";
     import cardFrom from '@/components/from/index'
     import {getSex,getProfession,getGhState} from "@/utils/auth";
+    import common from "@/utils/common.js"
 
     export default {
         name: "rolesMs",
@@ -54,21 +55,41 @@
                         {typeCode:'input',label:'医生名称医生名称医生名称',name:'name',placeholder:'请输入医生名称'},
                         {typeCode:'select',label:'性别',name:'sex',placeholder:'请选择性别',optionData:getSex(),},
                         {typeCode:'select',label:'医生职称',name:'profession',placeholder:'请选择医生职称',optionData:getProfession(),},
-                        {typeCode:'cascader',label:'科室',name:'department_id',placeholder:'请选择医生职称',optionData:this.parentsOpt,},
+                        {typeCode:'cascader',label:'科室',name:'department_id',placeholder:'请选择医生职称',optionData:common.getOptions(
+                                {
+                                    url: '/ghback/departments/trees',
+                                    target:()=>[this.formData,'department_id'],
+                                    callback: (res,async) => {
+                                        // 异步请求 option  回显处理内容
+                                        res.data && res.data.map(item=>{
+                                            item.label = item.name;
+                                            item.value = item.id;
+                                            item.children && item.children.map(t=>{
+                                                t.label = t.name;
+                                                t.value = t.id;
+                                            })
+                                        });
+                                        async.optionData = res.data;
+                                    }
+                                },
+                            )
+                        },
                         {typeCode:'input',label:'执业医院',name:'hospital_id',placeholder:'请输入执业医院'},
                         {typeCode:'select',label:'状态',name:'state',placeholder:'请选择状态',optionData:getGhState(),},
-                        {typeCode:'btn',icon:'el-icon-plus',btnName:'新建',btnClick:()=>{
-                                console.log('新建')
+                        {typeCode:'date',label:'开始时间',name:'start_time',placeholder:'请选择开始时间',isDisabledDate:true,ruleType:'notBefore',shortcut:true},
+                        {typeCode:'date',label:'结束时间',name:'end_time',placeholder:'请选择结束时间',},
+                        {typeCode:'btn',icon:'el-icon-plus',btnName:'新建',btnClick:(val,form)=>{
+                                console.log('新建',val,form)
                                 // this.handleAdd()
                             }
                         },
-                        {typeCode:'btn',btnName:'查询',btnClick:()=>{
-                                console.log('查询')
+                        {typeCode:'btn',btnName:'查询',btnClick:(val,form)=>{
+                                console.log('查询',val,form)
                                 // this.initData()
                             }
                         },
-                        {typeCode:'btn',btnName:'重置',btnClick:()=>{
-                                console.log('重置')
+                        {typeCode:'btn',btnName:'重置',btnType:'reset',btnClick:(val)=>{
+                                console.log('重置',val)
                             }
                         }
                 ],

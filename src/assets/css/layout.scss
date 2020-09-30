@@ -6,12 +6,15 @@ $navbarWidth: 280px;
   flex-wrap: wrap;
 }
 .rows {
-  //width: 100%;
+  width: 100%;
   float: left;
   box-sizing: border-box;
 }
+.fn-rel{
+  position: relative;
+}
 .float_left {
-  float: right;
+  float: left;
 }
 .rows-item {
   display: flex;
@@ -40,4 +43,7 @@ $navbarWidth: 280px;
   content: '*';
   color: #f56c6c;
   margin-right: 4px;
+}
+.maginRight-10 {
+  margin-right: 10px;
 }

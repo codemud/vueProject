@@ -1,3 +1,4 @@
+import request from "@/utils/request";
 const common = {
     /**
      * 时间格式化
@@ -41,11 +42,11 @@ const common = {
      * 深拷贝
      */
     deepCopy(obj) {
-        var result = Array.isArray(obj) ? [] : {};
-        for (var key in obj) {
+        let result = Array.isArray(obj) ? [] : {};
+        for (let key in obj) {
             if (obj.hasOwnProperty(key)) {
                 if (typeof obj[key] === 'object' && obj[key] !== null) {
-                    result[key] = deepCopy(obj[key]) // 递归复制
+                    result[key] = this.deepCopy(obj[key]) // 递归复制
                 } else {
                     result[key] = obj[key]
                 }
@@ -58,11 +59,11 @@ const common = {
      */
     checkPhone(phone){
         if(phone === ''){
-            this.showToast('手机号码不能为空！')
+            this.showToast('手机号码不能为空！');
             return false
         }
         if(!(/^1[2345789]\d{9}$/.test(phone))){
-            this.showToast('手机号码有误，请重新输入')
+            this.showToast('手机号码有误，请重新输入');
             return false
         }else{
             return true
@@ -73,10 +74,30 @@ const common = {
      * @param {Object} n 需要几位随机数
      */
     randomn(n) {
-        if (n > 21) return null
+        if (n > 21) return null;
         return parseInt((Math.random() + 1) * Math.pow(10,n-1))
     },
+    getOptions(json){
+        if(json.url){
+            request({
+                url: json.url,
+                method: "post",
+                data:json.data || {}
+            }).then(res=>{
+                let async = this.getSelCurr(json.target());
+                json.callback && json.callback(res,async);
+            });
+        } else{
+            this.nextTick(()=>{
+                let async = this.getSelCurr(json.target());
+                json.callback && json.callback(async);
+            })
+        }
+    },
+    getSelCurr(arr) {
+        let formData = arr[0];
+        let objKey = arr[1];
+        return formData.find(item=>item.name === objKey);
+    },
 };
-module.exports = {
-    common
-};
+export default common;

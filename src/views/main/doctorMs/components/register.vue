@@ -71,7 +71,7 @@
 <script>
     import Dialog from "@/components/dialog";
     import Calendar from 'vue-calendar-component';
-    import { common } from '@/utils/common.js';
+    import common from '@/utils/common.js';
     import API from "@/api/doctorMs/source";
     import { getWorkTime,getDoctorWorkState } from "@/utils/auth";
     export default {
