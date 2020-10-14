@@ -6,7 +6,7 @@ import {close} from './NProgress'
 
 
 const request = axios.create({
-    baseURL: "/backend",
+    baseURL: "/backstage",
     timeout: 20000, // 请求超时
     headers: {
         Accept: "application/vnd.adminapi.v1+json"
@@ -28,6 +28,7 @@ request.interceptors.request.use(
 // 响应请求
 request.interceptors.response.use(
     response => {
+        console.log(response,'ssss')
         let res = response.data;
         if (res.code !== 200) {
             codePromise(res.code && res.code);

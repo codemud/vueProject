@@ -31,22 +31,7 @@ export default {
                 login(...msg).then(response => {
                     let res = response.data;
                     res && commit("SET_TOKEN", res.access_token);
-                    res && commit("SET_USER", res.config.userinfo);
-                    setSex(res.config.sex);
-                    setState(res.config.state);
-                    setArea(res.config.areas);
-                    setGhState(res.config.gh_state);
-                    setLevel(res.config.level);
-                    setProperty(res.config.property);
-                    setHitype(res.config.hi_type);
-                    setBdnature(res.config.bd_nature);
-                    setProfession(res.config.profession);
-                    setLoginCode(res.config.logincode);
-                    setMenberCert(res.config.gh_member_cert);
-                    setYuYue(res.config.gh_yuyue);
-                    setWorkTime(res.config.gh_work_time);
-                    setDoctorWorkState(res.config.gh_doctor_work_state);
-                    setGHtype(res.config.gh_hospital_type);
+                    res && commit("SET_USER", res.config.userInfo);
                     resolve(res);
                 });
             });

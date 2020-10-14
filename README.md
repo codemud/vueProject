@@ -1,4 +1,4 @@
-# myzbms
+# vue-ms
 
 ## Project setup
 ```
@@ -8,6 +8,11 @@ npm install
 ### Compiles and hot-reloads for development
 ```
 npm run serve
+```
+
+### node serve and hot-reloads for development
+```
+nodemon app.js
 ```
 
 ### Compiles and minifies for production

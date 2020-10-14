@@ -3,7 +3,7 @@ import request from "@/utils/request";
 // 登录
 export function login(name, password, remember) {
     return request({
-        url: "/ghback/login",
+        url: "/login",
         method: "post",
         data: {
             name,

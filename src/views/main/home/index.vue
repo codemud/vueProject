@@ -1,7 +1,7 @@
 <template>
     <div class="home_page">
         <p class="title marginbottom_10"><i class="el-icon-cloudy"/>{{timeValue }}, {{$store.state.user.user.name}}</p>
-        <p class="title">欢迎访问名医在线挂号平台</p>
+        <p class="title">欢迎访问后台管理系统</p>
         <!-- <el-card class="box-card">
           <div class="echarts-dom"
                style="width:100%;height:376px"></div>

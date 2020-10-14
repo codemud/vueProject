@@ -1,13 +1,12 @@
 <template>
     <div class="login">
         <div class="container">
-            <img class="img_logo" src="@/assets/img/logo.png" alt="">
             <img class="img_ysj" src="@/assets/img/login_rsj.png" alt="">
             <div class="l_left">
                 <img src="@/assets/img/login_img.png" alt="">
             </div>
             <div class="l_block">
-                <h1 class="title">挂号平台系统</h1>
+                <h1 class="title">后台管理系统</h1>
                 <el-input placeholder="请输入账户" v-model="name" clearable @keyup.enter.native="login">
                     <i slot="prefix" class="el-input__icon el-icon-user-solid"/>
                 </el-input>

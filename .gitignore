@@ -21,9 +21,5 @@ yarn-error.log*
 *.sw?
 ./dist
 ./node_modules
-./dist
-<<<<<<< Updated upstream
+./package-lock.json
 /package-lock.json
-=======
-package-lock.json
->>>>>>> Stashed changes

@@ -5,18 +5,14 @@ module.exports = {
         open: true,
         https: false,
         proxy: {
-            "/backend": {
+            "/backstage": {
                 target: process.env.VUE_APP_SERVICE_URL, //对应自己的接口
                 secure: true,
                 changeOrigin: true,
                 pathRewrite: {
-                    "^/backend": "/"
+                    "^/backstage": "/"
                 }
             }
-        },
-        overlay: {//vue-cli3关闭eslint语法检查
-            warnings: true,
-            errors: true
         }
     },
     lintOnSave: false,
