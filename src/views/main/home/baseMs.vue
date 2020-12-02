@@ -1,34 +1,6 @@
 <template>
     <div class="bannerMs bannerMs_self">
-        <el-card class="box-card">
-            <el-form :inline="true"
-                     :model="search"
-                     class="demo-form-inline">
-<!--                <el-form-item label="科室名称：">-->
-<!--                    <el-input class="width200" v-model="search.name" placeholder="请输入科室名称" @keyup.enter.native="pagination.currentPage=1;initData()">-->
-<!--                    </el-input>-->
-<!--                </el-form-item>-->
-<!--                <el-form-item label="状态：">-->
-<!--                    <el-select class="width200" v-model="search.state" placeholder="请选择状态" @change="handleChangeType">-->
-<!--                        <el-option v-for="item in stateOption"-->
-<!--                                   :key="item.value"-->
-<!--                                   :label="item.label"-->
-<!--                                   :value="item.value">-->
-<!--                        </el-option>-->
-<!--                    </el-select>-->
-<!--                </el-form-item>-->
-                <el-row class="margintop_20">
-                    <el-form-item class="float_left">
-                        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新建</el-button>
-                    </el-form-item>
-<!--                    <el-form-item class="float_left">-->
-<!--                        <el-button type="primary" @click="pagination.currentPage=1;initData()">查询</el-button>-->
-<!--                        <el-button @click="search = {}">重置</el-button>-->
-<!--                    </el-form-item>-->
-                </el-row>
-            </el-form>
-
-        </el-card>
+        <cardFrom :formData="formData" :form="search"></cardFrom>
 
         <el-card class="box-card">
             <Table :data="data"
@@ -58,16 +30,59 @@
     import tooltip from "@/components/tooltip";
     import API from "@/api/home/departmentMs";
     import deptOperation from "./components/deptOperation";
-    import {getState,} from "@/utils/auth";
+    import cardFrom from '@/components/from/index';
+    import {getSex,getProfession,getState} from "@/utils/auth";
+    import common from "@/utils/common.js"
     export default {
         name: "departmentMs",
         components: {
             Table,
             tooltip,
             deptOperation,
+            cardFrom
         },
         data () {
             return {
+                formData:[
+                    {typeCode:'input',label:'名称',name:'name',placeholder:'请输入名称'},
+                    {typeCode:'select',label:'性别',name:'sex',placeholder:'请选择性别',optionData:getSex(),},
+                    {typeCode:'cascader',label:'类别',name:'category',placeholder:'请选择',optionData:common.getOptions(
+                            {
+                                url: '/category/trees',
+                                target:()=>[this.formData,'category'],
+                                callback: (res,async) => {
+                                    // 异步请求 option  回显处理内容
+                                    res.data && res.data.map(item=>{
+                                        item.label = item.name;
+                                        item.value = item.id;
+                                        item.children && item.children.map(t=>{
+                                            t.label = t.name;
+                                            t.value = t.id;
+                                        })
+                                    });
+                                    async.optionData = res.data;
+                                }
+                            },
+                        )
+                    },
+                    {typeCode:'select',label:'状态',name:'state',placeholder:'请选择状态',optionData:getState(),},
+                    {typeCode:'date',label:'开始时间',name:'start_time',placeholder:'请选择开始时间',isDisabledDate:true,ruleType:'notBefore',shortcut:true},
+                    {typeCode:'date',label:'结束时间',name:'end_time',placeholder:'请选择结束时间',},
+                    {typeCode:'btn',icon:'el-icon-plus',btnName:'新建',btnClick:(val,form)=>{
+                            console.log('新建',val,form)
+                            // this.handleAdd()
+                        }
+                    },
+                    {typeCode:'btn',btnName:'查询',btnClick:(val,form)=>{
+                            console.log('查询',val,form)
+                            // this.initData()
+                        }
+                    },
+                    {typeCode:'btn',btnName:'重置',btnType:'reset',btnClick:(val)=>{
+                            console.log('重置',val)
+                        }
+                    }
+                ],
                 ruleForm: {},
                 search: {},
                 data: [
@@ -92,8 +107,8 @@
             };
         },
         created () {
-            this.initData();
-            this.initParents();
+            // this.initData();
+            // this.initParents();
             this.stateOption = getState().map(item=>({
                 label:item.name,
                 value:item.id

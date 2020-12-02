@@ -1,28 +1,28 @@
 <template>
     <div>
         <div class="navbar_menu">
-            <el-menu :router="true"
-                     :default-active="$route.path"
-                     :background-color="skin.navBarColor"
-                     text-color="#909399"
-                     active-text-color="#fff"
+            <el-menu :background-color="skin.navBarColor"
                      :collapse="!collapse"
+                     :default-active="$route.path"
+                     :router="true"
                      :unique-opened="true"
-                     ref="elmenu">
+                     active-text-color="#fff"
+                     ref="elmenu"
+                     text-color="#909399">
                 <div class="navbar_logo">
                     后台管理系统
                 </div>
-                <el-submenu v-for="(m, key) in menuList"
-                            :index="m.path"
-                            :key="key">
+                <el-submenu :index="m.path"
+                            :key="key"
+                            v-for="(m, key) in menuList">
                     <template slot="title">
                         <i :class="m.meta.icon"></i>
                         <span slot="title">{{ m["meta"].parentName }}</span>
                     </template>
-                    <el-menu-item v-for="(ml, key) in m.children"
-                                  :index="ml.path"
+                    <el-menu-item :index="ml.path"
                                   :key="key"
-                                  @click="handleSetMenuBar(ml)">
+                                  @click="handleSetMenuBar(ml)"
+                                  v-for="(ml, key) in m.children">
                         {{ ml.name }}
                     </el-menu-item>
                 </el-submenu>

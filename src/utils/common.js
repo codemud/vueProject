@@ -97,6 +97,7 @@ const common = {
     getSelCurr(arr) {
         let formData = arr[0];
         let objKey = arr[1];
+        // const {} = [arr]
         return formData.find(item=>item.name === objKey);
     },
 };

@@ -6,9 +6,11 @@ const path = require('path'),
     bodyParser = require('koa-bodyparser'),
     logger = require('koa-logger');
 const user = require('./servers/routers/user');
+const info = require('./servers/routers/info');
 const jwtKoa = require('koa-jwt');
 
 const configService = require('./servers/config/config');
+const {verifyToken} = require('./servers/config/token_verify');
 const app = new koa();
 
 app.use(bodyParser());
@@ -28,11 +30,43 @@ app.on('error', function (err, ctx) {
 
 app.use(koaStatic(path.resolve('dist')));
 
+app.use(async (ctx, next) => {
+    let token = ctx.headers.authorization;
+    console.log(token,'xxxxxx')
+    if(token){
+        // 验证token
+        verifyToken(token).then(res=>{
+            console.log('这是解析后的token',res)
+            ctx.state = {
+                data:res
+            };
+        });
+    }
+    await next();
+});
+
+app.use(async(ctx, next)=>{
+    return next().catch((err) => {
+        if (401 === err.status) {
+            ctx.status = 401;
+            ctx.body = {
+                code:2001,
+                message:'登录过期，请重新登录'
+            }
+        } else {
+            throw err;
+        }
+    });
+});
+
 app.use(jwtKoa({secret:configService.SECRET}).unless({
-    path:[/^\/login/,/^\/favicon.ico/]
+        path:[/^\/login/,/^\/favicon.ico/]
 }));
 
+
+
 koaRouter.use(user.routes()).use(user.allowedMethods());
+koaRouter.use(info.routes()).use(info.allowedMethods());
 app.use(koaRouter.routes());
 
 

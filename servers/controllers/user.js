@@ -1,6 +1,7 @@
 const userModel = require('../models/user');
-let jwt = require('jsonwebtoken');
-const configService = require('../config/config');
+// let jwt = require('jsonwebtoken');
+// const configService = require('../config/config');
+const {signToken} = require('../config/token_verify');
 
 const postUserAuth = async function (ctx) {
     const requestData = ctx.request.body;
@@ -8,8 +9,9 @@ const postUserAuth = async function (ctx) {
     if (userInfo) {
         if (userInfo.password !== requestData.password) {
             ctx.body = {
+                code: 1001,
                 success: false,
-                code: 200,
+                data:{},
                 message: '密码错误！'
             }
         } else {
@@ -19,23 +21,31 @@ const postUserAuth = async function (ctx) {
                 originExp: Date.now() + 60 * 60 * 1000, // 设置过期时间（毫秒）为 1 小时
             };
             // 签发 token
-            let token = jwt.sign(userToken, configService.SECRET,{ expiresIn: '1h' });
-            ctx.body = {
-                success: true,
-                code: 200,
-                data:{
-                    access_token: token,
-                    config:{
-                        userInfo:{id:userInfo.id,name:userInfo.user_name}
-                    }
-                },
-                message: '登陆成功！'
-            }
+            signToken(userToken).then(res=>{
+                ctx.body = {
+                    success: true,
+                    code: 200,
+                    data:{
+                        access_token: res,
+                        config:{
+                            userInfo:{id:userInfo.id,name:userInfo.user_name},
+                            sexInfo:[{id:1,name:'男'},{id:2,name:'女'}],
+                            statusInfo:[{id:1,name:'状态1'},{id:2,name:'状态2'}],
+                            loginCode:[2001,2002,2003],
+                            professionInfo:[{id:1,name:'程序猿'},{id:2,name:'程序媛'},{id:3,name:'产品狗'},{id:4,name:'攻城狮'},{id:5,name:'设计师'}],
+                            levelInfo:[{id:1,name:'三品'},{id:2,name:'二品'},{id:3,name:'一品'},{id:4,name:'超一品'},{id:5,name:'极品'}]
+                        }
+                    },
+                    message: '登陆成功！'
+                }
+            })
+            // let token = jwt.sign(userToken, configService.SECRET,{ expiresIn: '1h' });
         }
     } else {
         ctx.body = {
             success: false,
-            code: 200,
+            code: 1001,
+            data:{},
             message: '用户不存在！'
         }
     }

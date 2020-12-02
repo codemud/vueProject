@@ -4,8 +4,7 @@ import {
     removeToken,
     setUser,
     getUser,
-    setMenberCert,setYuYue,setGHtype,
-    setSex,setState,setGhState,setLevel,setProperty,setHitype,setBdnature,setProfession,setLoginCode,setArea,setWorkTime,setDoctorWorkState
+    setSex,setState,setLevel,setProfession,setLoginCode,setWorkTime
 } from "@/utils/auth";
 import {login, logout} from "@/api/login";
 
@@ -32,6 +31,11 @@ export default {
                     let res = response.data;
                     res && commit("SET_TOKEN", res.access_token);
                     res && commit("SET_USER", res.config.userInfo);
+                    res && setSex(res.config.sexInfo);
+                    res && setState(res.config.statusInfo);
+                    res && setLoginCode(res.config.loginCode);
+                    res && setProfession(res.config.professionInfo);
+                    res && setLevel(res.config.levelInfo);
                     resolve(res);
                 });
             });

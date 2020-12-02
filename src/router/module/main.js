@@ -2,16 +2,16 @@ import Layout from "@/views/Layout";
 
 export default [
     {
-        path: "/home/departmentMs",
-        name: "基础信息",
+        path: "/home/baseMs",
+        name: "基础模块",
         icon: "el-icon-s-home",
         component: Layout,
         children: [
             {
-                name: "科室配置",
-                path: "/home/departmentMs",
+                name: "基础页面",
+                path: "/home/baseMs",
                 meta: {parentName: "基础信息"},
-                component: () => import(`@/views/main/home/departmentMs`)
+                component: () => import(`@/views/main/home/baseMs`)
             },
         ]
     },

@@ -28,8 +28,8 @@ request.interceptors.request.use(
 // 响应请求
 request.interceptors.response.use(
     response => {
-        console.log(response,'ssss')
         let res = response.data;
+        // console.log(res,'ssss')
         if (res.code !== 200) {
             codePromise(res.code && res.code);
             return Message({
