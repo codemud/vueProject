@@ -11,8 +11,9 @@ const signToken = function (userInfo){
 };
 // 解析token
 const verifyToken = function (token) {
+    let _token = token.split(' ')[1];
     return new Promise((resolve,reject)=>{
-        jwt.verify(token, configService.SECRET, (error, decoded) => {
+        jwt.verify(_token, configService.SECRET, (error, decoded) => {
             console.log('zxzxzxzxzxzxzxzx',error,decoded)
             if (error) {
                 console.log('error', error)
