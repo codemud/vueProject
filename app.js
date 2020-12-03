@@ -32,11 +32,10 @@ app.use(koaStatic(path.resolve('dist')));
 
 app.use(async (ctx, next) => {
     let token = ctx.headers.authorization;
-    console.log(token,'xxxxxx')
     if(token){
         // 验证token
         verifyToken(token).then(res=>{
-            console.log('这是解析后的token',res)
+            // console.log('这是解析后的token',res)
             ctx.state = {
                 data:res
             };

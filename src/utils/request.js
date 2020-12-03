@@ -49,6 +49,9 @@ request.interceptors.response.use(
                 case 500:
                     msg = "未完成的请求，服务器遇到了一个意外";
                     break;
+                case 401:
+                    msg = "登录过期，请重新登录哟";
+                    break;
                 case 404:
                     msg = "服务器无法找到所请求的页面。";
                     break;

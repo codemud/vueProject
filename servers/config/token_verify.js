@@ -12,11 +12,11 @@ const signToken = function (userInfo){
 // 解析token
 const verifyToken = function (token) {
     let _token = token.split(' ')[1];
+    // console.log('_token',_token)
     return new Promise((resolve,reject)=>{
         jwt.verify(_token, configService.SECRET, (error, decoded) => {
-            console.log('zxzxzxzxzxzxzxzx',error,decoded)
+            // console.log('zxzxzxzxzxzxzxzx',error,decoded)
             if (error) {
-                console.log('error', error)
                 return reject(error.message)
             }
             console.log('decoded', decoded)

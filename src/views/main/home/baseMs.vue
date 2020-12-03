@@ -52,15 +52,17 @@
                                 target:()=>[this.formData,'category'],
                                 callback: (res,async) => {
                                     // 异步请求 option  回显处理内容
-                                    res.data && res.data.map(item=>{
-                                        item.label = item.name;
-                                        item.value = item.id;
-                                        item.children && item.children.map(t=>{
-                                            t.label = t.name;
-                                            t.value = t.id;
-                                        })
-                                    });
-                                    async.optionData = res.data;
+                                    if(res.code === 200){
+                                        async.optionData = res.data.list && res.data.list.map(item=>{
+                                            item.label = item.name;
+                                            item.value = item.id;
+                                            item.children && item.children.map(t=>{
+                                                t.label = t.name;
+                                                t.value = t.id;
+                                            });
+                                            return item
+                                        });
+                                    }
                                 }
                             },
                         )
@@ -107,6 +109,7 @@
             };
         },
         created () {
+            console.log(getSex())
             // this.initData();
             // this.initParents();
             this.stateOption = getState().map(item=>({
