@@ -10,7 +10,8 @@ const common = {
         if (new Date(value).toString() === 'Invalid Date') {
             throw new Error('Invalid Date');
         }
-        const date = new Date(value);
+        //时间戳10位需要*1000,13位不用
+        const date = new Date((value+'').length === 10 ? value * 1000:value);
         const o = {
             'M+': date.getMonth() + 1, // 月份
             'd+': date.getDate(), // 日
@@ -77,6 +78,13 @@ const common = {
         if (n > 21) return null;
         return parseInt((Math.random() + 1) * Math.pow(10,n-1))
     },
+    /**
+     *解决cardFrom表单组件中发送请求并回调赋值的操作
+     * @param json:
+     * url:请求地址
+     * target：[数组源数据,需要赋值的那条数据name值]
+     * callback()：回调函数，返回getSelCurr匹配到的数组源数据中那条数据
+     */
     getOptions(json){
         if(json.url){
             request({
@@ -98,5 +106,33 @@ const common = {
         const [formData,objKey] = [...arr];
         return formData.find(item=>item.name === objKey);
     },
+    /**
+     * 解决需要将数组数据中某些值进行转变，如id:'1'变成value:'1'
+     * @param arr:数据源 ,Array
+     * @param targetKey:将转换成的key ,Object : {id:'value',name:'label'}
+     *         id --> value;name --> label
+     * @param nodeString:树形结构节点,一般是'children',  String ,默认children
+     */
+    changeTree(arr,targetKey,nodeString = 'children') {
+        let sourceArr = arr;
+        sourceArr.map(res=>{
+            for(let [key, value] of Object.entries(targetKey)){
+                res[value] = res[key];
+            }
+            if(res[nodeString]){
+                this.changeTree(res[nodeString],targetKey)
+            }
+        });
+        return sourceArr;
+    },
+    /**
+     * 根据数据中的id或其他值，找到对应那条数据
+     * @param arr 数据源
+     * @param value 集合中的value值,列表返回里面的例如sex：1
+     * @param key 依据key值找到对应的那条数据
+     */
+    getSelectName(arr,value,key){
+        return arr.find(item=>item[key] === value)
+    }
 };
 export default common;

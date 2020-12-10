@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-const url = "/ghback/departments";
+const url = "/baseMs";
 export default {
     getList (data) {
         return request({

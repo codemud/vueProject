@@ -23,23 +23,27 @@
         </el-card>
 
         <deptOperation v-if="ruleForm.visible" :ruleForm="ruleForm" @event="handleForm"/>
+        <PDFDocument v-if="pdfOption.url" :url="pdfOption.url" :scale = pdfOption.scale></PDFDocument>
     </div>
 </template>
 <script>
     import Table from "@/components/table";
     import tooltip from "@/components/tooltip";
-    import API from "@/api/home/departmentMs";
+    import API from "@/api/home/baseMs";
     import deptOperation from "./components/deptOperation";
+    import PDFDocument from "@/components/pdfPreview/PDFDocument";
     import cardFrom from '@/components/from/index';
-    import {getSex,getProfession,getState} from "@/utils/auth";
+    import {getSex, getState} from "@/utils/auth";
     import common from "@/utils/common.js"
+
     export default {
         name: "departmentMs",
         components: {
             Table,
             tooltip,
             deptOperation,
-            cardFrom
+            cardFrom,
+            PDFDocument
         },
         data () {
             return {
@@ -53,14 +57,9 @@
                                 callback: (res,async) => {
                                     // 异步请求 option  回显处理内容
                                     if(res.code === 200){
-                                        async.optionData = res.data.list && res.data.list.map(item=>{
-                                            item.label = item.name;
-                                            item.value = item.id;
-                                            item.children && item.children.map(t=>{
-                                                t.label = t.name;
-                                                t.value = t.id;
-                                            });
-                                            return item
+                                        async.optionData = common.changeTree(res.data.list, {
+                                            id: 'value',
+                                            name: 'label'
                                         });
                                     }
                                 }
@@ -83,22 +82,31 @@
                     {typeCode:'btn',btnName:'重置',btnType:'reset',btnClick:(val)=>{
                             console.log('重置',val)
                         }
+                    },
+                    {typeCode:'btn',btnName:'打开PDF',btnClick:(val)=>{
+                            console.log('打开PDF',val)
+                            this.pdfOption.url = 'https://dakaname.oss-cn-hangzhou.aliyuncs.com/file/2018-12-28/1546003237411.pdf';
+                        }
                     }
                 ],
                 ruleForm: {},
                 search: {},
                 data: [
-                    { prop: "name", label: "科室名称", showTooltip: true,align:'left' },
-                    { prop: "number", label: "科室编号", showTooltip: true },
-                    { prop: "parent_name", label: "上级科室", showTooltip: true },
-                    { prop: "sort", label: "顺序", showTooltip: true },
-                    { prop: "image", label: "缩略图", width: "150px" },
+                    { prop: "name", label: "名称", showTooltip: true,align:'left' },
+                    { prop: "number", label: "编号", showTooltip: true },
+                    { prop: "sex_name", label: "性别", showTooltip: true },
+                    { prop: "category", label: "类别", showTooltip: true },
+                    // { prop: "image", label: "缩略图", width: "150px" },
                     { prop: "state_name", label: "状态" },
-                    { prop: "created_at", label: "创建时间", showTooltip: true },
+                    { prop: "created_time", label: "创建时间", showTooltip: true },
                     { prop: "operation", label: "操作" }
                 ],
                 list: [],
                 parentsOpt: [],
+                pdfOption:{
+                    url: '',
+                    scale: 2.5,
+                },
                 pagination: {
                     total: 0, // 总条数
                     currentPage: 1, // 当前页码
@@ -109,13 +117,8 @@
             };
         },
         created () {
-            console.log(getSex())
-            // this.initData();
+            this.initData();
             // this.initParents();
-            this.stateOption = getState().map(item=>({
-                label:item.name,
-                value:item.id
-            }));
         },
         methods: {
             initData () {
@@ -128,13 +131,18 @@
                     let res = response.data;
                     if (res) {
                         this.pagination.total = res.total;
+                        // res.list.map(item=>{
+                        //     item.state_name = item.state === 0?'不启用':'启用';
+                        //     if(item.children && item.children.length) {
+                        //         item.children.map(t=>{
+                        //             t.state_name = t.state === 0?'不启用':'启用';
+                        //         })
+                        //     }
+                        // });
                         res.list.map(item=>{
-                            item.state_name = item.state === 0?'不启用':'启用';
-                            if(item.children && item.children.length) {
-                                item.children.map(t=>{
-                                    t.state_name = t.state === 0?'不启用':'启用';
-                                })
-                            }
+                            item.sex_name = common.getSelectName(getSex(),item.sex,'id').name;
+                            item.state_name = common.getSelectName(getState(),item.sex,'id').name;
+                            item.created_time = common.dateFormat(item.created_at,'yyyy-MM-dd');
                         });
                         this.list = res.list;
                         if (this.list.length <= 0 && this.pagination.currentPage > 1) {

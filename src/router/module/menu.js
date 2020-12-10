@@ -1,10 +1,9 @@
 import Layout from "@/views/Layout";
-// import store from "../../store/modules/user";
+import store from "../../store/modules/user";
 import mainMenu from "./main";
 
 export default () => {
-    // const menuList = store.state.user.menu || [];
-    const menuList = mainMenu;
+    const menuList = process.env.VUE_APP_MENU_TYPE === 'local'?mainMenu:(store.state.user.menu || []);
     let main = [];
     menuList.forEach(e => {
         let arry = {

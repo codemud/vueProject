@@ -15,11 +15,11 @@ const verifyToken = function (token) {
     // console.log('_token',_token)
     return new Promise((resolve,reject)=>{
         jwt.verify(_token, configService.SECRET, (error, decoded) => {
-            // console.log('zxzxzxzxzxzxzxzx',error,decoded)
+            // console.log(error,decoded)
             if (error) {
                 return reject(error.message)
             }
-            console.log('decoded', decoded)
+            // console.log('decoded', decoded)
             return resolve(decoded)
         })
     }).catch(err=>{
