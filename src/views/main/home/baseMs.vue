@@ -8,17 +8,6 @@
                    :pagination="pagination"
                    @change="changePagine"
                    @delmore="handleDel">
-                <!-- 头像 -->
-                <template v-slot:image="scope">
-                    <el-image class="headimg" fit="fill" :src="scope.text">
-                        <div slot="error"></div>
-                    </el-image>
-                </template>
-                <!-- 操作按钮 -->
-                <template v-slot:operation="scope">
-                    <tooltip :data="{ content: '编辑', type: 'primary' }" @event="handleEdit(scope.row)" />
-                    <tooltip :data="{ content: '删除', type: 'danger' }" @event="handleDel(scope.row)"/>
-                </template>
             </Table>
         </el-card>
 
@@ -28,7 +17,6 @@
 </template>
 <script>
     import Table from "@/components/table";
-    import tooltip from "@/components/tooltip";
     import API from "@/api/home/baseMs";
     import deptOperation from "./components/deptOperation";
     import PDFDocument from "@/components/pdfPreview/PDFDocument";
@@ -40,7 +28,6 @@
         name: "departmentMs",
         components: {
             Table,
-            tooltip,
             deptOperation,
             cardFrom,
             PDFDocument
@@ -92,14 +79,38 @@
                 ruleForm: {},
                 search: {},
                 data: [
-                    { prop: "name", label: "名称", showTooltip: true,align:'left' },
-                    { prop: "number", label: "编号", showTooltip: true },
-                    { prop: "sex_name", label: "性别", showTooltip: true },
-                    { prop: "category", label: "类别", showTooltip: true },
-                    // { prop: "image", label: "缩略图", width: "150px" },
-                    { prop: "state_name", label: "状态" },
-                    { prop: "created_time", label: "创建时间", showTooltip: true },
-                    { prop: "operation", label: "操作" }
+                    {typeCode:'', prop: "name", label: "名称", showTooltip: true,align:'left' },
+                    {typeCode:'', prop: "number", label: "编号", showTooltip: true },
+                    {typeCode:'', prop: "sex_name", label: "性别", showTooltip: true },
+                    {typeCode:'', prop: "category", label: "类别", showTooltip: true },
+                    {typeCode:'img', prop: "src", label: "缩略图", width: "150px",isPreview:true},
+                    {typeCode:'', prop: "state_name", label: "状态" },
+                    {typeCode:'', prop: "created_time", label: "创建时间", showTooltip: true },
+                    {typeCode:'iconText',prop:'state',label:'图标状态',textList:[
+                            {id:'1',icon:'el-icon-success',iconColor:'#409eff',text:'成功'},
+                            {id:'2',icon:'el-icon-error',iconColor:'#f56c6c',text:'失败'},
+                            {id:'3',icon:'el-icon-warning',iconColor:'#e6a23c',text:'警告'},
+                        ]
+                    },
+                    {typeCode:'textBtnList', prop: "", label: "文本按钮操作" ,data:[
+                            {id:'1',text:'改变状态',callback:(item,scope)=>{
+                                    console.log(item,scope,'文本按钮')
+                                }
+                            }
+                        ]
+                    },
+                    {typeCode:'tooltipList', prop: "", label: "操作" ,data:[
+                            {content: '编辑', type: 'primary',callback:(item,scope) => {
+                                    console.log(item,scope,'编辑')
+                                }
+                            },
+                            {content: '删除', type: 'danger',callback:(item,scope) => {
+                                    console.log(item,scope,'编辑')
+                                    this.handleDel(scope);
+                                }
+                            }
+                        ]
+                    }
                 ],
                 list: [],
                 parentsOpt: [],
@@ -118,7 +129,6 @@
         },
         created () {
             this.initData();
-            // this.initParents();
         },
         methods: {
             initData () {
@@ -145,29 +155,13 @@
                             item.created_time = common.dateFormat(item.created_at,'yyyy-MM-dd');
                         });
                         this.list = res.list;
+                        console.log('list',this.list)
                         if (this.list.length <= 0 && this.pagination.currentPage > 1) {
                             this.pagination.currentPage--;
                             this.initData()
                         }
                     }
                 })
-            },
-            initParents() {
-                this.parentsOpt = [{label:'无',value:0}];
-                API.getParentsList().then(res => {
-                    //加载科室
-                    if (res.code === 200) {
-                        res.data && res.data.map(item=>{
-                            item.label = item.name;
-                            item.value = item.id;
-                            item.children && item.children.map(t=>{
-                                t.label = t.name;
-                                t.value = t.id;
-                            })
-                        });
-                        this.parentsOpt = [...this.parentsOpt,...res.data];
-                    }
-                });
             },
             handleChangeType () {
                 this.pagination.currentPage = 1;

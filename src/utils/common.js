@@ -80,10 +80,11 @@ const common = {
     },
     /**
      *解决cardFrom表单组件中发送请求并回调赋值的操作
-     * @param json:
+     * @param json:{
      * url:请求地址
      * target：[数组源数据,需要赋值的那条数据name值]
      * callback()：回调函数，返回getSelCurr匹配到的数组源数据中那条数据
+     * }
      */
     getOptions(json){
         if(json.url){
