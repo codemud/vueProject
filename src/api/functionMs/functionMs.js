@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-const url = "/ghback/doctors";
+const url = "/functions";
 export default {
     getList (data) {
         return request({
@@ -40,12 +40,6 @@ export default {
             data: {
                 ...data
             }
-        });
-    },
-    getParentsList () {  // 上级科室
-        return request({
-            url: '/ghback/departments/trees',
-            method: "post"
         });
     },
 };

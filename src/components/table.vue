@@ -22,14 +22,14 @@
                         </el-image>
                     </div>
                     <div v-else-if="d.typeCode === 'tooltipList'">
-                        <tooltip :data="tipBtn" :key="index" @event="handleTipBtn(tipBtn,scope.row)" v-for="(tipBtn,index) in d.data"/>
+                        <tooltip :data="tipBtn" :key="index" @event="handleBtn(tipBtn,scope.row)" v-for="(tipBtn,index) in d.data"/>
                     </div>
                     <div v-else-if="d.typeCode === 'iconText'">
                         <p><i :class="showIconText(d.textList,scope.row[d.prop]).icon" :style="{color:showIconText(d.textList,scope.row[d.prop]).iconColor}" class="table-icon-style"/>{{showIconText(d.textList,scope.row[d.prop]).text}}
                         </p>
                     </div>
                     <div v-else-if="d.typeCode === 'textBtnList'">
-
+                        <el-button v-for="(textBtn,index) in d.data" :key="index" @click="handleBtn(textBtn,scope.row)" type="text">{{textBtn.text}}</el-button>
                     </div>
                     <div v-else>
                         <slot :name="d.prop"
@@ -110,7 +110,7 @@
                 });
                 this.$emit("delmore", ids)
             },
-            handleTipBtn(d, scope) {
+            handleBtn(d, scope) {
                 try {
                     d.callback && d.callback(d, scope, this.data);
                 } catch (e) {
@@ -184,7 +184,9 @@
     .margin-left-10 {
         margin-left: 10px;
     }
-
+    .prevent-preview {
+        pointer-events:none;
+    }
     .img {
         width: 100%;
         height: 100%;

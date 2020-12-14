@@ -31,16 +31,16 @@ export default [
         ]
     },
     {
-        path: "/doctorMs",
-        name: "医生管理",
+        path: "/functionMs",
+        name: "功能模块",
         icon: "el-icon-s-custom",
         component: Layout,
         children: [
             {
-                path: "/doctorMs",
-                name: "医生列表",
-                meta: {parentName: "医生管理"},
-                component: () => import(`@/views/main/doctorMs`)
+                path: "/functionMs",
+                name: "列表",
+                meta: {parentName: "功能模块"},
+                component: () => import(`@/views/main/functionMs`)
             }
         ],
         super: 1
@@ -56,20 +56,6 @@ export default [
                 name: "患者列表",
                 meta: {parentName: "患者管理"},
                 component: () => import(`@/views/main/patientMs`)
-            }
-        ]
-    },
-    {
-        path: "/orderMs",
-        name: "订单管理",
-        icon: "el-icon-s-tools",
-        component: Layout,
-        children: [
-            {
-                path: "/orderMs",
-                name: "订单列表",
-                meta: {parentName: "订单管理"},
-                component: () => import(`@/views/main/orderMs`)
             }
         ]
     },

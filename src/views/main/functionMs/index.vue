@@ -33,11 +33,10 @@
     import tooltip from "@/components/tooltip";
     import operation from "./components/operation";
     import register from "./components/register";
-    import API from "@/api/doctorMs/doctorMs";
-    import Hospitals from "@/api/specialMs";
-    import source from "@/api/doctorMs/source";
+    import API from "@/api/functionMs/functionMs";
+    import source from "@/api/functionMs/source";
     import cardFrom from '@/components/from/index'
-    import {getSex,getProfession,getGhState} from "@/utils/auth";
+    import {getSex,getProfession,getState} from "@/utils/auth";
     import common from "@/utils/common.js"
 
     export default {
@@ -52,30 +51,26 @@
         data() {
             return {
                 formData:[
-                        {typeCode:'input',label:'医生名称医生名称医生名称',name:'name',placeholder:'请输入医生名称'},
+                        {typeCode:'input',label:'名称名称名称',name:'name',placeholder:'请输入名称'},
                         {typeCode:'select',label:'性别',name:'sex',placeholder:'请选择性别',optionData:getSex(),},
-                        {typeCode:'select',label:'医生职称',name:'profession',placeholder:'请选择医生职称',optionData:getProfession(),},
-                        {typeCode:'cascader',label:'科室',name:'department_id',placeholder:'请选择医生职称',optionData:common.getOptions(
+                        {typeCode:'select',label:'职称',name:'profession',placeholder:'请选择职称',optionData:getProfession(),},
+                        {typeCode:'cascader',label:'类别',name:'category',placeholder:'请选择类别',optionData:common.getOptions(
                                 {
-                                    url: '/ghback/departments/trees',
-                                    target:()=>[this.formData,'department_id'],
+                                    url: '/category/trees',
+                                    target:()=>[this.formData,'category'],
                                     callback: (res,async) => {
                                         // 异步请求 option  回显处理内容
-                                        res.data && res.data.map(item=>{
-                                            item.label = item.name;
-                                            item.value = item.id;
-                                            item.children && item.children.map(t=>{
-                                                t.label = t.name;
-                                                t.value = t.id;
-                                            })
-                                        });
-                                        async.optionData = res.data;
+                                        if(res.code === 200){
+                                            async.optionData = common.changeTree(res.data.list, {
+                                                id: 'value',
+                                                name: 'label'
+                                            });
+                                        }
                                     }
                                 },
                             )
                         },
-                        {typeCode:'input',label:'执业医院',name:'hospital_id',placeholder:'请输入执业医院'},
-                        {typeCode:'select',label:'状态',name:'state',placeholder:'请选择状态',optionData:getGhState(),},
+                        {typeCode:'select',label:'状态',name:'state',placeholder:'请选择状态',optionData:getState(),},
                         {typeCode:'date',label:'开始时间',name:'start_time',placeholder:'请选择开始时间',isDisabledDate:true,ruleType:'notBefore',shortcut:true},
                         {typeCode:'date',label:'结束时间',name:'end_time',placeholder:'请选择结束时间',},
                         {typeCode:'btn',icon:'el-icon-plus',btnName:'新建',btnClick:(val,form)=>{
@@ -97,22 +92,32 @@
                 ruleRegForm: {},
                 search: {},
                 data: [
-                    {prop: "head", label: "医生头像", width: "150px"},
-                    {prop: "name", label: "医生姓名", showTooltip: true},
-                    {prop: "sex_name", label: "医生性别", showTooltip: true},
-                    {prop: "profession_name", label: "医生职称", showTooltip: true},
-                    {prop: "hospital_name", label: "第一执业医院", showTooltip: true},
-                    {prop: "parents", label: "科室", showTooltip: true},
-                    {prop: "state_name", label: "状态"},
-                    {prop: "operation", label: "操作"}
+                    {typeCode:'img',prop: "head", label: "头像", width: "150px",isPreview:false,},
+                    {typeCode:'',prop: "name", label: "姓名", showTooltip: true},
+                    {typeCode:'',prop: "sex_name", label: "性别", showTooltip: true},
+                    {typeCode:'',prop: "profession_name", label: "职称", showTooltip: true},
+                    {typeCode:'',prop: "category", label: "类别", showTooltip: true},
+                    {typeCode:'',prop: "state_name", label: "状态"},
+                    {
+                        typeCode:'textBtnList',prop: "", label: "操作",data:[
+                            {text:'编辑',callback:(item,scope)=>{
+                                    console.log(item,scope,'编辑')
+                                    this.handleEdit(scope);
+                                }
+                            },
+                            {text:'删除',callback:(item,scope)=>{
+                                    console.log(item,scope,'删除')
+                                }
+                            },
+                        ]
+                    }
                 ],
                 department:[],
                 hospitalsOpt:[],
                 sexOpt: getSex(),
                 professionOpt: getProfession(),
-                stateOpt: getGhState(),
+                stateOpt: getState(),
                 list: [],
-                parentsOpt:[],
                 pagination: {
                     total: 0, // 总条数
                     currentPage: 1, // 当前页码
@@ -123,8 +128,6 @@
         },
         created() {
             this.initData();
-            this.initParents();
-            this.initHospitals();
         },
         methods: {
             initData() {
@@ -133,48 +136,21 @@
                     page: this.pagination.currentPage,
                     limit: this.pagination.pageSize
                 };
-                data.department_id = data.department_id &&  data.department_id.slice(data.department_id.length - 1).toString();
                 API.getList(data).then(response => {
                     let res = response.data;
                     if (res) {
                         this.pagination.total = res.total;
                         res.list.map(item=>{
-                            item.parents = item.department_name + (item.department_sub_name?'-'+item.department_sub_name:'');
-                            // item.sex_name = item.sex === '0'?'未知':(item.sex === 1?'男':'女');
-                            item.sex_name = item.sex === 1?'男':'女';
-                            item.state_name = item.gh_state === 0?'未开通':(item.gh_state === 1?'开通':(item.gh_state === 2?'屏蔽状态':'审核中'));
+                            item.sex_name = common.getSelectName(getSex(),item.sex,'id').name;
+                            item.state_name = common.getSelectName(getState(),item.state,'id').name;
+                            item.profession_name = common.getSelectName(getProfession(),item.profession,'id').name;
+                            item.created_time = common.dateFormat(item.created_at,'yyyy-MM-dd');
                         });
                         this.list = res.list;
                         if (this.list.length <= 0 && this.pagination.currentPage > 1) {
                             this.pagination.currentPage--;
                             this.initData()
                         }
-                    }
-                });
-            },
-            initParents() {
-                // this.parentsOpt = [{label:'无',value:0}];
-                API.getParentsList().then(res => {
-                    //加载科室
-                    if (res.code === 200) {
-                        res.data && res.data.map(item=>{
-                            item.label = item.name;
-                            item.value = item.id;
-                            item.children && item.children.map(t=>{
-                                t.label = t.name;
-                                t.value = t.id;
-                            })
-                        });
-                        // this.parentsOpt = [...this.parentsOpt,...res.data];
-                        this.parentsOpt = res.data;
-                    }
-                });
-            },
-            initHospitals() {
-                Hospitals.getHospitalsList().then(res => {
-                    //加载科室
-                    if (res.code === 200) {
-                        this.hospitalsOpt = res.data;
                     }
                 });
             },
@@ -259,17 +235,12 @@
             },
             handleEdit(row) {
                 API.getDetail(row.id).then((res) => {
-                    // res.data.sex = res.data.sex.toString();
-                    // res.data.profession = res.data.profession.toString();
-                    // res.data.state = res.data.state.toString();
                     this.ruleForm = {
                         visible: true,
                         title: "编辑",
                         loading: false,
                         sexOpt: this.sexOpt,
                         stateOpt: this.stateOpt,
-                        parentsOpt: this.parentsOpt,
-                        hospitalsOpt: this.hospitalsOpt,
                         professionOpt: this.professionOpt,
                         ...res.data
                     };
@@ -284,14 +255,11 @@
                     loading: false,
                     sexOpt: this.sexOpt,
                     stateOpt: this.stateOpt,
-                    parentsOpt: this.parentsOpt,
-                    hospitalsOpt: this.hospitalsOpt,
                     professionOpt: this.professionOpt,
-                    gh_state: 1,
+                    state: 1,
                     sex: 1,
                     profession: 1,
                     head: "",
-                    cooperations: [],
                 };
             },
             handleReg(row) {

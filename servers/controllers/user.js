@@ -30,7 +30,7 @@ const postUserAuth = async function (ctx) {
                         config:{
                             userInfo:{id:userInfo.id,name:userInfo.user_name},
                             sexInfo:[{id:1,name:'男'},{id:2,name:'女'}],
-                            statusInfo:[{id:1,name:'状态1'},{id:2,name:'状态2'}],
+                            statusInfo:[{id:1,name:'成功'},{id:2,name:'失败'}],
                             loginCode:[2001,2002,2003],
                             professionInfo:[{id:1,name:'程序猿'},{id:2,name:'程序媛'},{id:3,name:'产品狗'},{id:4,name:'攻城狮'},{id:5,name:'设计师'}],
                             levelInfo:[{id:1,name:'三品'},{id:2,name:'二品'},{id:3,name:'一品'},{id:4,name:'超一品'},{id:5,name:'极品'}]

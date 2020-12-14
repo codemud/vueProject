@@ -37,7 +37,7 @@
                 formData:[
                     {typeCode:'input',label:'名称',name:'name',placeholder:'请输入名称'},
                     {typeCode:'select',label:'性别',name:'sex',placeholder:'请选择性别',optionData:getSex(),},
-                    {typeCode:'cascader',label:'类别',name:'category',placeholder:'请选择',optionData:common.getOptions(
+                    {typeCode:'cascader',label:'类别',name:'category',placeholder:'请选择类别',optionData:common.getOptions(
                             {
                                 url: '/category/trees',
                                 target:()=>[this.formData,'category'],
@@ -92,14 +92,18 @@
                             {id:'3',icon:'el-icon-warning',iconColor:'#e6a23c',text:'警告'},
                         ]
                     },
-                    {typeCode:'textBtnList', prop: "", label: "文本按钮操作" ,data:[
-                            {id:'1',text:'改变状态',callback:(item,scope)=>{
+                    {typeCode:'textBtnList', prop: "", label: "文本按钮操作" ,width: "200px",data:[
+                            {text:'改变状态',callback:(item,scope)=>{
                                     console.log(item,scope,'文本按钮')
                                 }
-                            }
+                            },
+                            {text:'改变状态',callback:(item,scope)=>{
+                                    console.log(item,scope,'文本按钮')
+                                }
+                            },
                         ]
                     },
-                    {typeCode:'tooltipList', prop: "", label: "操作" ,data:[
+                    {typeCode:'tooltipList', prop: "", label: "操作" ,width: "150px",data:[
                             {content: '编辑', type: 'primary',callback:(item,scope) => {
                                     console.log(item,scope,'编辑')
                                 }
@@ -151,11 +155,10 @@
                         // });
                         res.list.map(item=>{
                             item.sex_name = common.getSelectName(getSex(),item.sex,'id').name;
-                            item.state_name = common.getSelectName(getState(),item.sex,'id').name;
+                            item.state_name = common.getSelectName(getState(),item.state,'id').name;
                             item.created_time = common.dateFormat(item.created_at,'yyyy-MM-dd');
                         });
                         this.list = res.list;
-                        console.log('list',this.list)
                         if (this.list.length <= 0 && this.pagination.currentPage > 1) {
                             this.pagination.currentPage--;
                             this.initData()
