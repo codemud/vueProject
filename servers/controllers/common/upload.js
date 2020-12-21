@@ -22,7 +22,7 @@ const uploadImg = async function (ctx) {
                 fs.mkdir("/servers/datas/uploads",function(err){
                     if (err){
                         //没创建好
-                        console.error(err);
+                        console.error(err,'xxxxx');
                         return ctx.body = {
                             success: true,
                             code: 1001,
