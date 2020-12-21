@@ -25,8 +25,8 @@
                 <imgUpload :fileName="ruleForm.head" :files="getFileNames" filesName="guahao" target="head">
                 </imgUpload>
             </el-form-item>
-            <el-form-item label="职称：" prop="profession">
-                <el-select placeholder="请选择职称" v-model="ruleForm.profession">
+            <el-form-item label="职业：" prop="profession">
+                <el-select placeholder="请选择职业" v-model="ruleForm.profession">
                     <el-option :key="i" :label="item.name" :value="item.id" v-for="(item, i) in ruleForm.professionOpt">
                     </el-option>
                 </el-select>
@@ -35,7 +35,7 @@
                 <el-input placeholder="请输入身份证号" v-model="ruleForm.identity_number"/>
             </el-form-item>
             <el-form-item label="简介：">
-                <el-input :rows="3" placeholder="请输入医生简介" type="textarea" v-model="ruleForm.brief"/>
+                <el-input :rows="3" placeholder="请输入简介" type="textarea" v-model="ruleForm.brief"/>
             </el-form-item>
             <el-form-item label="状态" prop="gh_state">
                 <el-select class="width200" placeholder="请选择状态" v-model="ruleForm.state">

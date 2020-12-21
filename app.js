@@ -3,17 +3,28 @@ const path = require('path'),
     koaRouter = require('koa-router')(),
     koaStatic  = require('koa-static'),
     json = require('koa-json'),
-    bodyParser = require('koa-bodyparser'),
+    // bodyParser = require('koa-bodyparser'),
+    koaBody = require('koa-body'),
     logger = require('koa-logger');
 const user = require('./servers/routers/user');
 const info = require('./servers/routers/info');
+const upload = require('./servers/routers/upload');
 const jwtKoa = require('koa-jwt');
 
 const configService = require('./servers/config/config');
 const {verifyToken} = require('./servers/config/token_verify');
 const app = new koa();
 
-app.use(bodyParser());
+app.use(koaStatic(path.resolve('servers')));
+// app.use(bodyParser());
+app.use(koaBody({
+    multipart:true,//支持文件上传
+    formidable:{
+        uploadDir: path.join(__dirname,'/servers/datas/uploads'), //设置图片上传的目录
+        keepExtensions: true,//图片上传后不改变扩展名
+        maxFileSize: 5*1024*1024    // 设置上传文件大小最大限制，默认5M
+    }
+}));
 app.use(json());
 app.use(logger());
 
@@ -27,8 +38,6 @@ app.use(function* (next) {
 app.on('error', function (err, ctx) {
     console.log('server error',err);
 });
-
-app.use(koaStatic(path.resolve('dist')));
 
 app.use(async (ctx, next) => {
     let token = ctx.headers.authorization;
@@ -62,10 +71,9 @@ app.use(jwtKoa({secret:configService.SECRET}).unless({
         path:[/^\/login/,/^\/favicon.ico/]
 }));
 
-
-
 koaRouter.use(user.routes()).use(user.allowedMethods());
 koaRouter.use(info.routes()).use(info.allowedMethods());
+koaRouter.use(upload.routes()).use(upload.allowedMethods());
 app.use(koaRouter.routes());
 
 

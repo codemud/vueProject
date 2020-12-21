@@ -53,7 +53,7 @@
                 formData:[
                         {typeCode:'input',label:'名称名称名称',name:'name',placeholder:'请输入名称'},
                         {typeCode:'select',label:'性别',name:'sex',placeholder:'请选择性别',optionData:getSex(),},
-                        {typeCode:'select',label:'职称',name:'profession',placeholder:'请选择职称',optionData:getProfession(),},
+                        {typeCode:'select',label:'职业',name:'profession',placeholder:'请选择职称',optionData:getProfession(),},
                         {typeCode:'cascader',label:'类别',name:'category',placeholder:'请选择类别',optionData:common.getOptions(
                                 {
                                     url: '/category/trees',
@@ -75,12 +75,12 @@
                         {typeCode:'date',label:'结束时间',name:'end_time',placeholder:'请选择结束时间',},
                         {typeCode:'btn',icon:'el-icon-plus',btnName:'新建',btnClick:(val,form)=>{
                                 console.log('新建',val,form)
-                                // this.handleAdd()
+                                this.handleAdd()
                             }
                         },
                         {typeCode:'btn',btnName:'查询',btnClick:(val,form)=>{
                                 console.log('查询',val,form)
-                                // this.initData()
+                                this.initData()
                             }
                         },
                         {typeCode:'btn',btnName:'重置',btnType:'reset',btnClick:(val)=>{
@@ -98,6 +98,10 @@
                     {typeCode:'',prop: "profession_name", label: "职称", showTooltip: true},
                     {typeCode:'',prop: "category", label: "类别", showTooltip: true},
                     {typeCode:'',prop: "state_name", label: "状态"},
+                    {typeCode:'switch',prop: "state", label: "变更状态",activeValue:1,inactiveValue:2,callback:(item,scope)=>{
+                            console.log(item,scope,'switch变化')
+                        }
+                    },
                     {
                         typeCode:'textBtnList',prop: "", label: "操作",data:[
                             {text:'编辑',callback:(item,scope)=>{
@@ -107,6 +111,7 @@
                             },
                             {text:'删除',callback:(item,scope)=>{
                                     console.log(item,scope,'删除')
+                                    this.handleDel(scope)
                                 }
                             },
                         ]

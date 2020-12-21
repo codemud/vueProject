@@ -1,20 +1,27 @@
 <template>
-  <el-switch v-model="state.state"
+  <el-switch v-model="state[data.prop]"
              active-color="#13ce66"
              inactive-color="#ccc"
-             :active-value="0"
-             :inactive-value="1"
+             :disabled="data.disabled"
+             :active-value="data.activeValue || 0"
+             :inactive-value="data.inactiveValue || 1"
              @change="handleSwitch">
   </el-switch>
 </template>
 <script>
 export default {
   props: {
-    row: Object
+    row: Object,
+    data:{
+      type:Object,
+      default:function(){
+        return {}
+      }
+    }
   },
   data () {
     return {
-      state: 1
+      state: 0
     };
   },
   created () {
@@ -27,7 +34,7 @@ export default {
   },
   methods: {
     handleSwitch () {
-      this.$emit("event", this.state);
+      this.$emit("event",this.data, this.state);
     }
   }
 };

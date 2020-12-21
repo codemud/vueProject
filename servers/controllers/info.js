@@ -41,21 +41,33 @@ const getFunctionList = async function (ctx) {
 
 const getDetailFunction = async function (ctx) {
     const result = await infoModel.getFunctionData();
-    console.log(ctx,ctx.params.id,'xxxxxxx')
-    // ctx.body = {
-    //     success: true,
-    //     code: 200,
-    //     data:{
-    //         total: result.length,
-    //         list: result,
-    //     },
-    //     message: '获取成功！'
-    // }
+    ctx.body = {
+        success: true,
+        code: 200,
+        data:result.find(item=>item.id === ctx.params.id),
+        message: '获取成功！'
+    }
+};
+
+const deleteFunction = async function (ctx) {
+    const result = await infoModel.getFunctionData();
+    const deleteIds = ctx.request.body.ids;//Array
+    console.log(ctx,ctx.request.body,'xxxx')
+    for(let id of deleteIds) {
+        result.splice(result.findIndex(item => item.id === id), 1)
+    }
+    ctx.body = {
+        success: true,
+        code: 200,
+        data:{},
+        message: '删除成功！'
+    }
 };
 
 module.exports = {
     getTreeList,
     getBaseList,
     getFunctionList,
-    getDetailFunction
+    getDetailFunction,
+    deleteFunction
 };

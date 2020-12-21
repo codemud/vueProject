@@ -63,18 +63,13 @@
                     },
                     {typeCode:'btn',btnName:'查询',btnClick:(val,form)=>{
                             console.log('查询',val,form)
-                            // this.initData()
+                            this.initData()
                         }
                     },
                     {typeCode:'btn',btnName:'重置',btnType:'reset',btnClick:(val)=>{
                             console.log('重置',val)
                         }
                     },
-                    {typeCode:'btn',btnName:'打开PDF',btnClick:(val)=>{
-                            console.log('打开PDF',val)
-                            this.pdfOption.url = 'https://dakaname.oss-cn-hangzhou.aliyuncs.com/file/2018-12-28/1546003237411.pdf';
-                        }
-                    }
                 ],
                 ruleForm: {},
                 search: {},
@@ -145,14 +140,6 @@
                     let res = response.data;
                     if (res) {
                         this.pagination.total = res.total;
-                        // res.list.map(item=>{
-                        //     item.state_name = item.state === 0?'不启用':'启用';
-                        //     if(item.children && item.children.length) {
-                        //         item.children.map(t=>{
-                        //             t.state_name = t.state === 0?'不启用':'启用';
-                        //         })
-                        //     }
-                        // });
                         res.list.map(item=>{
                             item.sex_name = common.getSelectName(getSex(),item.sex,'id').name;
                             item.state_name = common.getSelectName(getState(),item.state,'id').name;

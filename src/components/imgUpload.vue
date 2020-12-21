@@ -2,11 +2,11 @@
     <div class="img-block">
         <div v-show="!fileName" class="plus">+</div>
         <el-image v-show="fileName" class="img" :src="fileName" fit="fit"/>
-        <input v-if="showInput" type="file" accept="image/*" @change="handleFile" class="hiddenInput"/>
+        <input v-if="showInput" type="file" accept="image/*" name="file" @change="handleFile" class="hiddenInput"/>
     </div>
 </template>
 <script>
-    import {uploadOSS} from "@/utils/oss";
+    import {uploadFile} from "@/utils/upload";
 
     export default {
         props: {
@@ -30,7 +30,8 @@
                     if (!isLt5M) {
                         return this.$message.warning("上传文件大小不能超过 5MB!");
                     }
-                    let uploadedFile = await uploadOSS(event, this.filesName);
+                    let uploadedFile = await uploadFile(event);
+                    console.log(uploadedFile,'组件得到的url值')
                     uploadedFile.forEach(item=>{
                         this.files(this.target, item.split('?')[0].split('#')[0]);
                     })

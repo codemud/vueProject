@@ -31,6 +31,9 @@
                     <div v-else-if="d.typeCode === 'textBtnList'">
                         <el-button v-for="(textBtn,index) in d.data" :key="index" @click="handleBtn(textBtn,scope.row)" type="text">{{textBtn.text}}</el-button>
                     </div>
+                    <div v-else-if="d.typeCode === 'switch'">
+                        <elSwitch :row="scope.row" :data="d" @event="handleSwitch"/>
+                    </div>
                     <div v-else>
                         <slot :name="d.prop"
                               :row="scope.row"
@@ -63,7 +66,7 @@
 
 <script>
     import tooltip from "@/components/tooltip";
-
+    import elSwitch from "@/components/switch";
     export default {
         props: {
             data: Array,
@@ -71,7 +74,8 @@
             pagination: Object
         },
         components: {
-            tooltip
+            tooltip,
+            elSwitch
         },
         data() {
             return {
@@ -110,9 +114,20 @@
                 });
                 this.$emit("delmore", ids)
             },
+            //点击按钮的回调
             handleBtn(d, scope) {
                 try {
                     d.callback && d.callback(d, scope, this.data);
+                    // eslint-disable-next-line no-empty
+                } catch (e) {
+
+                }
+            },
+            //点击switch组件的回调
+            handleSwitch(d,scope){
+                try {
+                    d.callback && d.callback(d, scope);
+                    // eslint-disable-next-line no-empty
                 } catch (e) {
 
                 }
