@@ -15,6 +15,11 @@ npm run serve
 nodemon app.js
 ```
 
+### Compiles and nodeJs serve and hot-reloads for development
+```
+npm run start
+```
+
 ### Compiles and minifies for production
 ```
 npm run build
