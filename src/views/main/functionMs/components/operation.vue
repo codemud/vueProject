@@ -22,7 +22,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="头像：">
-                <imgUpload :fileName="ruleForm.head" :files="getFileNames" filesName="guahao" target="head">
+                <imgUpload :fileName="ruleForm.head" :files="getFileNames" target="head">
                 </imgUpload>
             </el-form-item>
             <el-form-item label="职业：" prop="profession">

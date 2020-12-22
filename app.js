@@ -15,12 +15,12 @@ const configService = require('./servers/config/config');
 const {verifyToken} = require('./servers/config/token_verify');
 const app = new koa();
 
-app.use(koaStatic(path.resolve('servers')));
+app.use(koaStatic(path.resolve('public')));
 // app.use(bodyParser());
 app.use(koaBody({
     multipart:true,//支持文件上传
     formidable:{
-        uploadDir: path.join(__dirname,'/servers/datas/uploads'), //设置图片上传的目录
+        // uploadDir: path.resolve('servers/datas/uploads'), //设置图片上传的目录
         keepExtensions: true,//图片上传后不改变扩展名
         maxFileSize: 5*1024*1024    // 设置上传文件大小最大限制，默认5M
     }

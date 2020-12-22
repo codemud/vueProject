@@ -52,7 +52,6 @@ const getDetailFunction = async function (ctx) {
 const deleteFunction = async function (ctx) {
     const result = await infoModel.getFunctionData();
     const deleteIds = ctx.request.body.ids;//Array
-    console.log(ctx,ctx.request.body,'xxxx')
     for(let id of deleteIds) {
         result.splice(result.findIndex(item => item.id === id), 1)
     }

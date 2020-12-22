@@ -19,11 +19,9 @@ function uploadFile(event) {
     formData.append('file', files);
     formData.append('type', type);
     return new Promise((resolve, reject) => {
-        console.log(files,type,formData,'xxxxxxxx')
-        API.uploadFiles(formData).then(data => {
-            resolve(data.res);
+        API.uploadFiles(formData).then(res => {
+            resolve(res.data);
         }).catch(err => {
-            console.log(err);
             reject(err);
         });
     })
