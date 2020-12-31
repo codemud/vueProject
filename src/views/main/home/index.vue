@@ -1,6 +1,6 @@
 <template>
     <div class="home_page">
-        <p class="title marginbottom_10"><i class="el-icon-cloudy"/>{{timeValue }}, {{$store.state.user.user.name}}</p>
+        <p class="title marginbottom_10"><i class="el-icon-cloudy"/>{{timeValue }}, {{user.user.name}}</p>
         <p class="title">欢迎访问后台管理系统</p>
         <!-- <el-card class="box-card">
           <div class="echarts-dom"
@@ -9,12 +9,13 @@
     </div>
 </template>
 <script>
-    import anime from 'animejs'
-
+    import anime from 'animejs';
+    import {mapState } from 'vuex';
     export default {
         data() {
             return {
-                timeValue: ""
+                timeValue: "",
+                name:this.$store.state.user.user.name
             }
         },
         mounted() {
@@ -23,6 +24,11 @@
             this.timeValue = "" + ((hours >= 12) ? "下午好 " : "上午好 ")
             // this.animateText()
             // this.getEchartData()
+        },
+        computed:{
+            ...mapState([
+                'user'
+            ])
         },
         methods: {
             animateText() {
