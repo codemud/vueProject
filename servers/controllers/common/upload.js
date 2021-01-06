@@ -18,7 +18,7 @@ const uploadImg = async function (ctx) {
     // console.log(uploadFilePath,'路径')
     const checkFilesAccess = function(){
         return new Promise((resolve,reject)=>{
-            fs.access(uploadFilePath,fs.constants.F_OK | fs.constants.W_OK,(err)=>{
+            fs.access(uploadFilePath+'/',fs.constants.F_OK | fs.constants.W_OK,(err)=>{
                 if(err){
                     console.log(`${err.code === 'ENOENT' ? '不存在' : '只可读'}`);
                     if(err.code === 'ENOENT'){
@@ -55,7 +55,7 @@ const uploadImg = async function (ctx) {
             fileInfo = {
                 success: true,
                 code: 200,
-                data:`${ctx.origin}/servers/datas/uploads/${basename}?${ctx.headers.authorization.split(' ')[1]}`,
+                data:`${ctx.origin}/datas/uploads/${basename}`,
                 message: '上传成功！'
             }
         }

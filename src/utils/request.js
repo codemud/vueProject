@@ -44,6 +44,7 @@ request.interceptors.response.use(
     error => {
         let res = error && error.response;
         let msg = "啊哦~系统出错了，请重新刷新页面哟!";
+        // console.log(res,'error')
         if (res) {
             switch (res.status) {
                 case 500:

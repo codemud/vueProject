@@ -14,8 +14,8 @@ const jwtKoa = require('koa-jwt');
 const configService = require('./servers/config/config');
 const {verifyToken} = require('./servers/config/token_verify');
 const app = new koa();
-
-app.use(koaStatic(path.resolve('public')));
+const a = require('./');
+app.use(koaStatic(path.resolve('servers')));
 // app.use(bodyParser());
 app.use(koaBody({
     multipart:true,//支持文件上传
@@ -28,18 +28,12 @@ app.use(koaBody({
 app.use(json());
 app.use(logger());
 
-app.use(function* (next) {
-    let start = new Date;
-    yield next;
-    let ms = new Date - start;
-    console.log('%s %s - %s',this.method,this.url,ms);
-});
-
 app.on('error', function (err, ctx) {
     console.log('server error',err);
 });
 
 app.use(async (ctx, next) => {
+    let start = new Date;
     let token = ctx.headers.authorization;
     if(token){
         // 验证token
@@ -51,7 +45,13 @@ app.use(async (ctx, next) => {
         });
     }
     await next();
+    let ms = new Date - start;
+    console.log(`method:${ctx.method} - url:${ctx.url} - ${ms}`);
 });
+
+app.use(jwtKoa({secret:configService.SECRET}).unless({
+    path:[/^\/login/,/^\/favicon.ico/]
+}));
 
 app.use(async(ctx, next)=>{
     return next().catch((err) => {
@@ -67,10 +67,6 @@ app.use(async(ctx, next)=>{
     });
 });
 
-app.use(jwtKoa({secret:configService.SECRET}).unless({
-        path:[/^\/login/,/^\/favicon.ico/]
-}));
-
 koaRouter.use(user.routes()).use(user.allowedMethods());
 koaRouter.use(info.routes()).use(info.allowedMethods());
 koaRouter.use(upload.routes()).use(upload.allowedMethods());
@@ -78,7 +74,7 @@ app.use(koaRouter.routes());
 
 
 app.listen(8180,()=>{
-    console.log('koa is listening in http://localhost:8180')
+    console.log(`koa is listening in http://localhost:${8180}`)
 });
 
 module.exports = app;

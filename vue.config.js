@@ -1,7 +1,7 @@
 module.exports = {
     publicPath: "./",
     devServer: {
-        port: 8080,
+        port: process.env.VUE_APP_SERVICE_PORT,
         open: true,
         https: false,
         proxy: {
