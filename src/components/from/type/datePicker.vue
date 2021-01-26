@@ -75,6 +75,14 @@
             },
             notAfter(time){
                 return time.getTime() > Date.now();
+            },
+            timeChange(time){
+                //时间范围选择，可以使用||来达到上面单个操作
+                //只能选择当前时间-当前时间后7天之内得时间
+                const date = new Date();
+                const afterDate = new Date().getTime() + 3600 * 1000 * 24 * 6;
+                date.setTime(date.getTime() - 3600 * 1000 * 24);
+                return time.getTime() < date || time.getTime() > afterDate;
             }
         },
         computed:{
