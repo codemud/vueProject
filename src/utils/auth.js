@@ -5,7 +5,6 @@ const STS_KEY = "manage_sts";
 const MENUBAR = "manage_menubars";
 const SEX = 'manage_sex';
 const STATE = 'manage_state';//状态
-const GHWORKTIME = "manage_gh_work_time";//挂号池工作时间区间
 const LEVEL = 'manage_level';//等级
 const PROFESSION = 'manage_profession';//职业
 const LOGINCODE = 'manage_logincode';//登录code
@@ -82,15 +81,6 @@ export function getLoginCode () {
 export function setLoginCode (code) {
     return localStorage.setItem(LOGINCODE, JSON.stringify(code));
 }
-// 获取 挂号池工作时间区间
-export function getWorkTime () {
-    return JSON.parse(localStorage.getItem(GHWORKTIME));
-}
-// 保存 挂号池工作时间区间
-export function setWorkTime (time) {
-    return localStorage.setItem(GHWORKTIME, JSON.stringify(time));
-}
-
 
 // 移除用户信息
 export function removeToken () {
