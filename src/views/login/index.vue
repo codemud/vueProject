@@ -39,7 +39,6 @@
                 let msg = [this.name, this.password, remember];
                 this.$store.dispatch("loginin", msg).then(res => {
                     this.isload = false;
-                    console.log(res,'xxxx')
                     if (res) {
                         this.$message({
                             message: "登陆成功",

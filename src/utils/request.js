@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Message} from "element-ui";
 import {getToken} from "./auth";
-import {codePromise} from "./codePromise";
+import {codePromise, authFailed} from "./codePromise";
 import {close} from './NProgress'
 
 
@@ -52,6 +52,7 @@ request.interceptors.response.use(
                     break;
                 case 401:
                     msg = "登录过期，请重新登录哟";
+                    authFailed(res.status);
                     break;
                 case 404:
                     msg = "服务器无法找到所请求的页面。";

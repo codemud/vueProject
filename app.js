@@ -14,7 +14,6 @@ const jwtKoa = require('koa-jwt');
 const configService = require('./servers/config/config');
 const {verifyToken} = require('./servers/config/token_verify');
 const app = new koa();
-const a = require('./');
 app.use(koaStatic(path.resolve('servers')));
 // app.use(bodyParser());
 app.use(koaBody({

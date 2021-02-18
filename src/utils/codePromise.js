@@ -15,3 +15,13 @@ export function codePromise(code) {
         // }
     })
 }
+
+export function authFailed(status) {
+    return new Promise(resolve => {
+        if (status === 401) {
+            removeToken();
+            router.push("/login");
+            resolve()
+        }
+    })
+}
