@@ -5,7 +5,8 @@ const {signToken} = require('../config/token_verify');
 
 const postUserAuth = async function (ctx) {
     const requestData = ctx.request.body;
-    const userInfo = await userModel.getUserByName(requestData.name);
+    const userInfo = await userModel.getUserByName();
+    console.log(userInfo,'用户信息');
     if (userInfo) {
         if (userInfo.password !== requestData.password) {
             ctx.body = {
