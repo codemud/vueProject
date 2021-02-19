@@ -6,7 +6,6 @@ const path = require('path'),
     // bodyParser = require('koa-bodyparser'),
     koaBody = require('koa-body'),
     logger = require('koa-logger');
-const {connection} = require('./servers/config/db');
 const user = require('./servers/routers/user');
 const info = require('./servers/routers/info');
 const upload = require('./servers/routers/upload');
@@ -16,7 +15,6 @@ const configService = require('./servers/config/config');
 const {verifyToken} = require('./servers/config/token_verify');
 const app = new koa();
 
-connection.connect();
 
 app.use(koaStatic(path.resolve('servers')));
 // app.use(bodyParser());

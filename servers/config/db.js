@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 // node连接mysql数据库配置文件
-const connection = mysql.createConnection({
+//创建连接池
+const pool = mysql.createPool({
     host     : 'localhost',
     user     : 'root',
     password : '123456',
@@ -9,13 +10,13 @@ const connection = mysql.createConnection({
 
 const execute = function(sql,params){
     return new Promise((resolve,reject)=>{
-        connection.connect((err, connection)=> {
+        pool.getConnection((err, connection)=> {
             if (err) {
                 reject(err)
             } else {
                 connection.query(sql,params, (err, result) => {
                     err? reject(err):resolve(result);
-                    connection.end();
+                    pool.releaseConnection(connection);
                 })
             }
         });
@@ -23,6 +24,6 @@ const execute = function(sql,params){
 };
 
 module.exports = {
-    connection,
+    pool,
     execute
 };

@@ -4,20 +4,10 @@ const { execute } = require('../config/db');
 function findDara(param,type) {
     return userNameData.find(item=>item[type] === param)
 }
-const getUserByName = async function(){
-
-    let sql = 'SELECT * FROM `user_info`;';
-    //查
-    // connection.query(sql,function (err, result) {
-    //     if(err){
-    //         console.log('[SELECT ERROR] - ',err.message);
-    //         return;
-    //     }
-    //     console.log('--------------------------SELECT----------------------------');
-    //     console.log(result);
-    //     console.log('------------------------------------------------------------\n\n');
-    // });
-    return await execute(sql);
+const getUserByName = async function(username){
+    let sql = `SELECT * FROM user_info WHERE user_name = '${username}';`;
+    let sqlData = await execute(sql);
+    return JSON.parse(JSON.stringify(sqlData));
 };
 
 const getUserById = async function(id){
