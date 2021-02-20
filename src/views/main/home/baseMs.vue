@@ -134,7 +134,7 @@
                 let data = {
                     ...this.search,
                     page: this.pagination.currentPage,
-                    limit: this.pagination.pageSize
+                    pageSize: this.pagination.pageSize
                 };
                 API.getList(data).then(response => {
                     let res = response.data;

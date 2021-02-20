@@ -14,13 +14,14 @@ const getTreeList = async function (ctx) {
 };
 
 const getBaseList = async function (ctx) {
-    const result = await infoModel.getBaseData();
+    const requestData = ctx.request.body;
+    const result = await infoModel.getBaseData(requestData);
     ctx.body = {
         success: true,
         code: 200,
         data:{
-            total: result.length,
-            list: result,
+            total: result.total,
+            list: result.data,
         },
         message: '获取成功！'
     }
