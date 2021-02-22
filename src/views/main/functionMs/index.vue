@@ -92,7 +92,7 @@
                 ruleRegForm: {},
                 search: {},
                 data: [
-                    {typeCode:'img',prop: "head", label: "头像", width: "150px",isPreview:false,},
+                    {typeCode:'img',prop: "img_path", label: "头像", width: "150px",isPreview:false,},
                     {typeCode:'',prop: "name", label: "姓名", showTooltip: true},
                     {typeCode:'',prop: "sex_name", label: "性别", showTooltip: true},
                     {typeCode:'',prop: "profession_name", label: "职称", showTooltip: true},
@@ -139,7 +139,7 @@
                 let data = {
                     ...this.search,
                     page: this.pagination.currentPage,
-                    limit: this.pagination.pageSize
+                    pageSize: this.pagination.pageSize
                 };
                 API.getList(data).then(response => {
                     let res = response.data;
@@ -148,8 +148,8 @@
                         res.list.map(item=>{
                             item.sex_name = common.getSelectName(getSex(),item.sex,'id').name;
                             item.state_name = common.getSelectName(getState(),item.state,'id').name;
-                            item.profession_name = common.getSelectName(getProfession(),item.profession,'id').name;
-                            item.created_time = common.dateFormat(item.created_at,'yyyy-MM-dd');
+                            // item.profession_name = common.getSelectName(getProfession(),item.profession,'id').name;
+                            item.created_time = common.dateFormat(item.create_time,'yyyy-MM-dd');
                         });
                         this.list = res.list;
                         if (this.list.length <= 0 && this.pagination.currentPage > 1) {

@@ -1,10 +1,9 @@
 const { execute } = require('../config/db');
-const getListTotal = async function(sql){
+const getListTotal = async function(tablename){
+    let sql = `select COUNT(1) as count FROM ${tablename};`;
     let sqlData = await execute(sql);
-    console.log(sqlData,'sqlData')
     let dataTotal = JSON.parse(JSON.stringify(sqlData));
-    console.log(dataTotal,'dataTotal')
-    return dataTotal[0];
+    return dataTotal[0].count;
 };
 module.exports = {
     getListTotal

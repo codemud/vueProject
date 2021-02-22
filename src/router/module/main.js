@@ -16,21 +16,6 @@ export default [
         ]
     },
     {
-        path: "/specialMs",
-        name: "医院管理",
-        icon: "el-icon-s-comment",
-        component: Layout,
-        children: [
-            {
-                path: "/specialMs",
-                name: "医院列表",
-                meta: {parentName: "医院管理"},
-                component: () => import(`@/views/main/specialMs`),
-
-            },
-        ]
-    },
-    {
         path: "/functionMs",
         name: "功能模块",
         icon: "el-icon-s-custom",
@@ -44,19 +29,5 @@ export default [
             }
         ],
         super: 1
-    },
-    {
-        path: "/patientMs",
-        name: "患者管理",
-        icon: "el-icon-s-data",
-        component: Layout,
-        children: [
-            {
-                path: "/patientMs",
-                name: "患者列表",
-                meta: {parentName: "患者管理"},
-                component: () => import(`@/views/main/patientMs`)
-            }
-        ]
-    },
+    }
 ];

@@ -1,6 +1,6 @@
 <template>
-    <div class="bannerMs bannerMs_self">
-        <cardFrom :formData="formData" :form="search"></cardFrom>
+    <div class="bannerMs">
+        <cardFrom :formData="formData" :form="search"/>
 
         <el-card class="box-card">
             <Table :data="data"
@@ -75,10 +75,10 @@
                 search: {},
                 data: [
                     {typeCode:'', prop: "name", label: "名称", showTooltip: true,align:'left' },
-                    {typeCode:'', prop: "number", label: "编号", showTooltip: true },
+                    {typeCode:'', prop: "num", label: "编号", showTooltip: true },
                     {typeCode:'', prop: "sex_name", label: "性别", showTooltip: true },
                     {typeCode:'', prop: "category", label: "类别", showTooltip: true },
-                    {typeCode:'img', prop: "src", label: "缩略图", width: "150px",isPreview:true},
+                    {typeCode:'img', prop: "img_path", label: "缩略图", width: "150px",isPreview:true},
                     {typeCode:'', prop: "state_name", label: "状态" },
                     {typeCode:'', prop: "created_time", label: "创建时间", showTooltip: true },
                     {typeCode:'iconText',prop:'state',label:'图标状态',textList:[
@@ -143,7 +143,7 @@
                         res.list.map(item=>{
                             item.sex_name = common.getSelectName(getSex(),item.sex,'id').name;
                             item.state_name = common.getSelectName(getState(),item.state,'id').name;
-                            item.created_time = common.dateFormat(item.created_at,'yyyy-MM-dd');
+                            item.created_time = common.dateFormat(item.create_time,'yyyy-MM-dd');
                         });
                         this.list = res.list;
                         if (this.list.length <= 0 && this.pagination.currentPage > 1) {
@@ -243,9 +243,9 @@
     };
 </script>
 <style lang="scss" scoped>
-    .bannerMs_self {
-        .width200 {
-            width: 200px;
-        }
-    }
+    /*.bannerMs_self {*/
+    /*    .width200 {*/
+    /*        width: 200px;*/
+    /*    }*/
+    /*}*/
 </style>

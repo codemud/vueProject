@@ -11,7 +11,8 @@ const common = {
             throw new Error('Invalid Date');
         }
         //时间戳10位需要*1000,13位不用
-        const date = new Date((value+'').length === 10 ? value * 1000:value);
+        const time = new Date((value+'')).getTime();
+        const date = time.length === 10 ? new Date(time * 1000):new Date(time);
         const o = {
             'M+': date.getMonth() + 1, // 月份
             'd+': date.getDate(), // 日
