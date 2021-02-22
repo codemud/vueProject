@@ -34,7 +34,6 @@
     import operation from "./components/operation";
     import register from "./components/register";
     import API from "@/api/functionMs/functionMs";
-    import source from "@/api/functionMs/source";
     import cardFrom from '@/components/from/index'
     import {getSex,getProfession,getState} from "@/utils/auth";
     import common from "@/utils/common.js"
@@ -217,7 +216,7 @@
                     stop_state:this.ruleRegForm.stop_state,
                 };
                 if (type === "add") {
-                    source.create(param).then((res) => {
+                    API.create(param).then((res) => {
                         if(res.code === 200){
                             this.initData();
                             this.ruleRegForm.visible = false;
@@ -227,7 +226,7 @@
                         this.ruleRegForm.loading = false;
                     });
                 } else {
-                    source.update(param).then((res) => {
+                    API.update(param).then((res) => {
                         if(res.code === 200){
                             this.initData();
                             this.ruleRegForm.visible = false;
