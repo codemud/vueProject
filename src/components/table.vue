@@ -1,5 +1,25 @@
 <template>
     <div>
+        <div class="options-list">
+            <div class="table-query">
+                <el-input class="input-query" placeholder="请输入内容" v-model="queryValue">
+                    <el-button slot="append" type="primary" class="fn-fl input-btn" icon="el-icon-search"></el-button>
+                </el-input>
+            </div>
+            <div class="table-more">
+                <div class="line"></div>
+                <div class="iconOption">
+                    <el-tooltip class="item" effect="dark" content="刷新" placement="bottom">
+                        <i class="el-icon-refresh iconFont"/>
+                    </el-tooltip>
+                </div>
+                <div class="iconOption">
+                    <el-tooltip class="item" effect="dark" content="过滤" placement="bottom">
+                        <i class="el-icon-finished iconFont"/>
+                    </el-tooltip>
+                </div>
+            </div>
+        </div>
         <el-table :border="pagination.border"
                   :data="list"
                   :height="pagination.selection?'55vh':'56vh'"
@@ -80,7 +100,8 @@
         data() {
             return {
                 delArray: [],
-                disabled: true
+                disabled: true,
+                queryValue:''
             }
         },
         methods: {
@@ -149,6 +170,50 @@
 </script>
 
 <style lang="scss" scoped>
+    .options-list {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        .table-query {
+            .input-query {
+                width: 200px;
+                height:32px;
+                ::v-deep .el-input__inner {
+                    height: 32px !important;
+                    line-height: 32px !important;
+                }
+                ::v-deep .el-input-group__append {
+                    color: #FFFFFF;
+                    background-color: #3c5b92;
+                    border: 1px solid #3c5b92;
+                }
+            }
+        }
+        .table-more {
+            display: flex;
+            align-items: center;
+            .line {
+                position: relative;
+                display: inline-block;
+                height: 20px;
+                margin: 0 8px;
+                border-top: 0;
+                border-left: 1px solid rgba(0,0,0,.07);
+            }
+            .iconOption {
+                margin-right: 5px;
+                .iconFont {
+                    font-size: 20px;
+                    cursor: pointer;
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+        }
+    }
+
     .table-header-style {
         text-align: center !important;
         color: #333;
