@@ -1,20 +1,20 @@
 <template>
     <div>
-        <div class="options-list">
-            <div class="table-query">
-                <el-input class="input-query" placeholder="请输入内容" v-model="queryValue">
-                    <el-button slot="append" type="primary" class="fn-fl input-btn" icon="el-icon-search"></el-button>
+        <div class="options-list" v-if="tableOption.showList.length !== 0">
+            <div class="table-query" v-if="tableOption.showList.includes('inputQuery')">
+                <el-input class="input-query" :placeholder="tableOption.inputQuery.placeholder" v-model="queryValue" @keyup.enter.native="queryTable" @clear="clearInput" clearable>
+                    <el-button slot="append" type="primary" class="fn-fl input-btn" icon="el-icon-search" @click="queryTable"/>
                 </el-input>
             </div>
-            <div class="table-more">
+            <div class="table-more" v-if="tableOption.showList.includes('iconRefresh') || tableOption.showList.includes('iconFinished')">
                 <div class="line"></div>
-                <div class="iconOption">
-                    <el-tooltip class="item" effect="dark" content="刷新" placement="bottom">
+                <div class="iconOption" v-if="tableOption.showList.includes('iconRefresh')">
+                    <el-tooltip popper-class="icon-tooltip-text" effect="dark" content="刷新" placement="bottom">
                         <i class="el-icon-refresh iconFont"/>
                     </el-tooltip>
                 </div>
-                <div class="iconOption">
-                    <el-tooltip class="item" effect="dark" content="过滤" placement="bottom">
+                <div class="iconOption" v-if="tableOption.showList.includes('iconFinished')">
+                    <el-tooltip popper-class="icon-tooltip-text" effect="dark" content="过滤" placement="bottom">
                         <i class="el-icon-finished iconFont"/>
                     </el-tooltip>
                 </div>
@@ -91,7 +91,13 @@
         props: {
             data: Array,
             list: Array,
-            pagination: Object
+            pagination: Object,
+            tableOption:{
+                type:Object,
+                default:function () {
+                    return {}
+                }
+            }
         },
         components: {
             tooltip,
@@ -125,15 +131,24 @@
                 this.$emit("load", tree, treeNode, resolve);
             },
             handleSelectionChange(val) {
-                this.delArray = val
+                this.delArray = val;
                 this.disabled = val.length <= 0
             },
             handleDelMore() {
-                let ids = []
+                let ids = [];
                 this.delArray.forEach(e => {
                     ids.push(e.id)
                 });
                 this.$emit("delmore", ids)
+            },
+            queryTable(){
+                let str = ['',...this.queryValue,''].join('.*'); //转化成正则格式的字符串
+                let reg = new RegExp(str); //正则
+                let data = this.list.find((item)=>reg.test(item[this.tableOption.inputQuery.name]));
+                console.log(data,'xxx')
+            },
+            clearInput(){
+
             },
             //点击按钮的回调
             handleBtn(d, scope) {
@@ -231,7 +246,6 @@
     .el-table-text {
         font-size: 18px;
         cursor: pointer;
-
         &:hover {
             font-size: 20px;
         }

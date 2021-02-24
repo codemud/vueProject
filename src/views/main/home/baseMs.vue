@@ -5,6 +5,7 @@
         <el-card class="box-card">
             <Table :data="data"
                    :list="list"
+                   :tableOption="tableOption"
                    :pagination="pagination"
                    @change="changePagine"
                    @delmore="handleDel">
@@ -12,7 +13,7 @@
         </el-card>
 
         <deptOperation v-if="ruleForm.visible" :ruleForm="ruleForm" @event="handleForm"/>
-        <PDFDocument v-if="pdfOption.url" :url="pdfOption.url" :scale = pdfOption.scale></PDFDocument>
+        <PDFDocument v-if="pdfOption.url" :url="pdfOption.url" :scale="pdfOption.scale" />
     </div>
 </template>
 <script>
@@ -112,6 +113,12 @@
                     }
                 ],
                 list: [],
+                tableOption:{
+                    showList:['inputQuery','iconRefresh','iconFinished'],
+                    inputQuery:{placeholder:'请输入名称',name:'name'},
+                    iconRefresh:()=>{},
+                    iconFinished:()=>{}
+                },
                 parentsOpt: [],
                 pdfOption:{
                     url: '',
