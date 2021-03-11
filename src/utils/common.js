@@ -135,6 +135,27 @@ const common = {
      */
     getSelectName(arr,value,key){
         return arr.find(item=>item[key] === value)
-    }
+    },
+    /**
+     * js 文本复制
+     * @param value 需复制的值
+     */
+    copy(value) {
+        let currentFocus = document.activeElement; // 保存当前活动节点
+        let input = document.createElement('input'); // 创建一个input标签
+        document.body.appendChild(input); // 把标签添加给body
+        input.style.opacity = 0; //设置input标签设置为透明(不可见)
+        input.value = value; // 把需要复制的值放到input上
+        // 记录当前滚动位置, 因为添加节点并选中的时候会影响页面滚动
+        let scrollY = window.scrollY;
+        input.focus(); // input节点获取焦点
+        input.setSelectionRange(0, input.value.length); // 选中input框中的所有文字
+        let res = document.execCommand('copy', true); // 复制文字并获取结果
+        currentFocus.focus(); // 之前活动节点获得焦点
+        document.body.removeChild(input); // 删除添加的input节点
+        // 页面滚动到之前位置
+        window.scrollTo(0, scrollY);
+        return res; // 返回操作结果
+    },
 };
 export default common;
