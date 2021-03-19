@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import mainRoutes from "./module/main";
-import Login from "@/views/login";
+// import Login from "@/views/login";
+import LoginNew from "@/views/login/login_new";
 import Layout from "@/views/Layout";
 Vue.use(VueRouter);
 
@@ -9,7 +10,7 @@ const routes = [
   {
     path: "/login",
     name: "登录",
-    component: Login
+    component: LoginNew
   },
   {
     path: "/",

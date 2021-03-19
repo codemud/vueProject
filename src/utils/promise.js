@@ -3,7 +3,7 @@ import store from "@/store";
 import { NProgress } from './NProgress'
 
 router.beforeEach((to, from, next) => {
-  NProgress.start()
+  NProgress.start();
   const token = store.getters.getUserToken;
   if (!token) {
     if (to.path !== "/login") {
@@ -11,6 +11,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
+    NProgress.done();
   } else {
     if (to.path !== "/login") {
       store.dispatch("setMenuBar", { name: to.name, path: to.path })

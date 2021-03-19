@@ -1,7 +1,7 @@
 import { Loading } from "element-ui";
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css' // Progress 进度条样式
-NProgress.configure({ showSpinner: false })
+NProgress.configure({ showSpinner: false });
 const loading = {
   loadingInstance: null,
   open () {
@@ -21,7 +21,7 @@ const loading = {
   }
 };
 function close () {
-  NProgress.done()
+  NProgress.done();
   loading.close()
 }
 export { NProgress, close, loading }
