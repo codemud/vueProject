@@ -75,7 +75,7 @@
                 ruleForm: {},
                 search: {},
                 data: [
-                    {typeCode:'', prop: "name", label: "名称", showTooltip: true,align:'left' },
+                    {typeCode:'', prop: "name", label: "名称", showTooltip: true,align:'left' ,fixed: 'left'},
                     {typeCode:'', prop: "num", label: "编号", showTooltip: true },
                     {typeCode:'', prop: "sex_name", label: "性别", showTooltip: true },
                     {typeCode:'', prop: "category", label: "类别", showTooltip: true },

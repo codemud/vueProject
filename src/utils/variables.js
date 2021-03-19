@@ -1,5 +1,5 @@
 function fullScreen () { //全屏
-  var element = document.documentElement;
+  let element = document.documentElement;
   if (element.requestFullscreen) {
     element.requestFullscreen();
   } else if (element.msRequestFullscreen) {

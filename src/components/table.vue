@@ -29,12 +29,14 @@
                   cell-class-name="table-cell-style"
                   header-cell-class-name="table-header-style"
                   lazy
-                  row-key="id">
+                  row-key="id"
+                  style="width: 100%"
+        >
             <el-table-column type="selection" v-if="pagination.selection" width="55">
             </el-table-column>
             <el-table-column :align="d.align || 'center'" :key="d.id" :label="d.label"
                              :show-overflow-tooltip="d.showTooltip"
-                             :sortable="d.sortable" :width="d.width || 'normal'" v-for="d in data">
+                             :sortable="d.sortable" :width="d.width || 'normal'" :fixed="d.fixed" v-for="d in data">
                 <template slot-scope="scope">
                     <div v-if="d.typeCode === 'img'">
                         <el-image :fit="scope.row[d.fit] || 'fill'" :preview-src-list="[scope.row[d.prop]]" :src="scope.row[d.prop]" :style="{cursor:d.isPreview?'pointer':'auto'}" class="img">

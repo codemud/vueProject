@@ -162,7 +162,7 @@
                     fullScreen();
                     this.fsImgName = 'fullscreen_exit_alt'
                 } else {
-                    this.fsImgName = 'fullscreen_alt'
+                    this.fsImgName = 'fullscreen_alt';
                     exitFullscreen()
                 }
             },

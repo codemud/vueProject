@@ -1,5 +1,5 @@
 <template>
-    <el-card class="box-card" shadow="always">
+    <el-card class="form-box-card" shadow="always">
         <el-form :inline="true" :model="form" class="demo-form-inline rows-flex">
                 <div v-for="(item, index) in formInputData" :key="index" class="marginbottom_10" :class="item.label?'rows-item':'rows'" :style=" 'width:' + (item.width?item.width:(item.typeCode==='btn'?'':340)) +'px;'">
                     <span v-if="item.label" class="font-14 pr-10 text-right" :style="'width:'+(item.labelWidth || 120) +'px;line-height: 40px;'">
@@ -107,5 +107,8 @@
 <style scoped>
     .initDateClass {
         width: 100% !important;
+    }
+    .form-box-card {
+        margin: 10px 0;
     }
 </style>
