@@ -46,7 +46,7 @@ const common = {
     deepCopy(obj) {
         let result = Array.isArray(obj) ? [] : {};
         for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
                 if (typeof obj[key] === 'object' && obj[key] !== null) {
                     result[key] = this.deepCopy(obj[key]) // 递归复制
                 } else {

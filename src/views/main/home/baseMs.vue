@@ -13,14 +13,13 @@
         </el-card>
 
         <deptOperation v-if="ruleForm.visible" :ruleForm="ruleForm" @event="handleForm"/>
-        <PDFDocument v-if="pdfOption.url" :url="pdfOption.url" :scale="pdfOption.scale" />
+<!--        <PDFDocument v-if="pdfOption.url" :url="pdfOption.url" :scale="pdfOption.scale" />-->
     </div>
 </template>
 <script>
     import Table from "@/components/table";
     import API from "@/api/home/baseMs";
     import deptOperation from "./components/deptOperation";
-    import PDFDocument from "@/components/pdfPreview/PDFDocument";
     import cardFrom from '@/components/from/index';
     import {getSex, getState} from "@/utils/auth";
     import common from "@/utils/common.js"
@@ -30,8 +29,7 @@
         components: {
             Table,
             deptOperation,
-            cardFrom,
-            PDFDocument
+            cardFrom
         },
         data () {
             return {
