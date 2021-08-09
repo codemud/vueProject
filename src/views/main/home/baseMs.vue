@@ -12,14 +12,12 @@
             </Table>
         </el-card>
 
-        <deptOperation v-if="ruleForm.visible" :ruleForm="ruleForm" @event="handleForm"/>
 <!--        <PDFDocument v-if="pdfOption.url" :url="pdfOption.url" :scale="pdfOption.scale" />-->
     </div>
 </template>
 <script>
     import Table from "@/components/table";
     import API from "@/api/home/baseMs";
-    import deptOperation from "./components/deptOperation";
     import cardFrom from '@/components/from/index';
     import {getSex, getState} from "@/utils/auth";
     import common from "@/utils/common.js"
@@ -28,7 +26,6 @@
         name: "departmentMs",
         components: {
             Table,
-            deptOperation,
             cardFrom
         },
         data () {
@@ -167,57 +164,6 @@
                 this.pagination.pageSize = val.pageSize;
                 this.initData();
             },
-            handleForm () {
-                this.ruleForm.loading = true;
-                if (this.ruleForm.title === "编辑") {
-                    API.update(this.ruleForm).then(res => {
-                        if (res.code === 200) {
-                            this.initData();
-                            this.initParents();
-                            this.ruleForm.visible = false;
-                            this.$message.success("修改成功!");
-                        }
-                    }).finally(() => {
-                        this.ruleForm.loading = false;
-                    });
-                } else {
-                    API.create(this.ruleForm).then(res => {
-                        if (res.code === 200) {
-                            this.ruleForm.visible = false;
-                            this.initData();
-                            this.initParents();
-                            this.$message.success("新增成功!");
-                        }
-                    }).finally(() => {
-                        this.ruleForm.loading = false;
-                    });
-                }
-            },
-            handleEdit (row) {
-                row.pid = row.pid.toString().split().map(Number);
-                this.ruleForm = {
-                    visible: true,
-                    title: "编辑",
-                    parentsOpt: this.parentsOpt,
-                    loading: false,
-                    ...row,
-                };
-            },
-            handleAdd () {
-                this.ruleForm = {
-                    visible: true,
-                    loading: false,
-                    title: "新建",
-                    parentsOpt: this.parentsOpt,
-                    sort: "1",
-                    image: "",
-                    name: '',
-                    easy: '',
-                    number: '',
-                    state: 1,
-                    pid:[]
-                };
-            },
             handleDel (row) {
                 let tips = "";
                 let colum = undefined;
@@ -234,13 +180,10 @@
                     type: "warning"
                 })
                 .then(() => {
-                    API.delete(colum).then(res => {
-                        if (res.code === 200) {
-                            this.$message.success("删除成功!");
-                            this.initData();
-                            this.initParents();
-                        }
-                    });
+                    setTimeout(()=> {
+                        this.$message.success("删除成功!");
+                        this.initData();
+                    }, 2000)
                 })
                 .catch(() => { });
             }

@@ -17,22 +17,18 @@
                 <template v-slot:operation="scope">
                     <tooltip :data="{ content: '编辑', type: 'primary' }" @event="handleEdit(scope.row)"/>
                     <tooltip :data="{ content: '删除', type: 'danger' }" @event="handleDel(scope.row)"/>
-                    <tooltip :data="{ content: '号池管理', type: 'primary',icon:'el-icon-date' }" @event="handleReg(scope.row)"/>
                 </template>
             </Table>
         </el-card>
 
         <operation v-if="ruleForm.visible" :ruleForm="ruleForm" @event="handleForm">
         </operation>
-        <register v-if="ruleRegForm.visible" :ruleRegForm="ruleRegForm" @event="handleRegForm">
-        </register>
     </div>
 </template>
 <script>
     import Table from "@/components/table";
     import tooltip from "@/components/tooltip";
     import operation from "./components/operation";
-    import register from "./components/register";
     import API from "@/api/functionMs/functionMs";
     import cardFrom from '@/components/from/index'
     import {getSex,getProfession,getState} from "@/utils/auth";
@@ -44,13 +40,12 @@
             Table,
             tooltip,
             operation,
-            register,
             cardFrom
         },
         data() {
             return {
                 formData:[
-                        {typeCode:'input',label:'名称名称名称',name:'name',placeholder:'请输入名称'},
+                        {typeCode:'input',label:'名称',name:'name',placeholder:'请输入名称'},
                         {typeCode:'select',label:'性别',name:'sex',placeholder:'请选择性别',optionData:getSex(),},
                         {typeCode:'select',label:'职业',name:'profession',placeholder:'请选择职称',optionData:getProfession(),},
                         {typeCode:'cascader',label:'类别',name:'category',placeholder:'请选择类别',optionData:common.getOptions(
@@ -88,7 +83,6 @@
                         }
                 ],
                 ruleForm: {},
-                ruleRegForm: {},
                 search: {},
                 data: [
                     {typeCode:'img',prop: "img_path", label: "头像", width: "150px",isPreview:false,},
@@ -206,37 +200,6 @@
                     });
                 }
             },
-            handleRegForm(type) {
-                let param = {
-                    doctor_id:this.ruleRegForm.id,
-                    hospital_id:this.ruleRegForm.hospitalId,
-                    date:this.ruleRegForm.date,
-                    record:this.ruleRegForm.record,
-                    work_state:this.ruleRegForm.work_state,
-                    stop_state:this.ruleRegForm.stop_state,
-                };
-                if (type === "add") {
-                    API.create(param).then((res) => {
-                        if(res.code === 200){
-                            this.initData();
-                            this.ruleRegForm.visible = false;
-                            this.$message.success("新增成功!");
-                        }
-                    }).finally(() => {
-                        this.ruleRegForm.loading = false;
-                    });
-                } else {
-                    API.update(param).then((res) => {
-                        if(res.code === 200){
-                            this.initData();
-                            this.ruleRegForm.visible = false;
-                            this.$message.success("修改成功!");
-                        }
-                    }).finally(() => {
-                        this.ruleRegForm.loading = false;
-                    });
-                }
-            },
             handleEdit(row) {
                 API.getDetail(row.id).then((res) => {
                     this.ruleForm = {
@@ -265,20 +228,6 @@
                     profession: 1,
                     head: "",
                 };
-            },
-            handleReg(row) {
-                API.getDetail(row.id).then((res) => {
-                    this.ruleRegForm = {
-                        visible: true,
-                        title: "挂号池管理",
-                        loading: false,
-                        stop_state:0,
-                        work_state:1,
-                        ...res.data
-                    };
-                }).catch((err) => {
-                    console.log(err)
-                });
             },
             handleDel(row) {
                 let tips = "";
