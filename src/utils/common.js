@@ -157,5 +157,20 @@ const common = {
         window.scrollTo(0, scrollY);
         return res; // 返回操作结果
     },
+    /**
+     * 纯前端实现列表查询
+     * @param searchParams 查询的params
+     * @param list 列表数组
+     */
+    listSearch(searchParams, list) {
+        let searchResultList = (searchParams, list) => list.filter(item => Object.keys(searchParams).every(key => {
+            if (searchParams[key] === '') return true;
+            let diff = key
+                ? String(item[key]).toLowerCase().indexOf(String(searchParams[key]).trim().toLowerCase()) !== -1
+                : String(item[key]).toLowerCase() === String(searchParams[key]).trim().toLowerCase();
+            return diff;
+        }));
+        return searchResultList(searchParams, list);
+    }
 };
 export default common;
